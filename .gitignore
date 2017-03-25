@@ -8,6 +8,7 @@ build/
 # Other Projects #
 ##################
 csharp/
+src/dev/
 
 
 # Miscellaneous Documentation #
