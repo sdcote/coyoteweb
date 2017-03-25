@@ -13,3 +13,12 @@ project to achieve certain goals. For example, the Authentication, Authorization
 Auditing capabilities are used in this project and can be modeled by other projects 
 to achieve the same level of security in them   
 
+# Quickstart
+All that is required to spin up a web server is:
+	java -jar CoyoteWeb-X.X.jar config.json
+
+The `config.json` is a JSON formatted file which contains the configuration for 
+the server. Examples can be found in the test directories.
+
+Although the server can be called programmatically, it may be better to use the HTTP
+server in the Coyote Loader project. 
