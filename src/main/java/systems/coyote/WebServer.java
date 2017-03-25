@@ -113,127 +113,131 @@ public class WebServer extends AbstractLoader {
     // we need to get the port first as part of the server constructor
     int port = DEFAULT_PORT; // set default
 
-    // TODO: This is klunky, just query the element, don't loop through!  CHANGE THIS
     if ( cfg != null ) {
-      for ( DataField field : cfg.getFields() ) {
-        if ( PORT.equalsIgnoreCase( field.getName() ) ) {
-          try {
-            port = Integer.parseInt( field.getStringValue() );
-            port = NetUtil.validatePort( port );
-            if ( port == 0 ) {
-              Log.error( "Configured port of " + port + " is not a valid port (out of range) - ignoring" );
-              port = DEFAULT_PORT;
-            }
-          } catch ( NumberFormatException e ) {
+
+      if ( cfg.containsIgnoreCase( PORT ) ) {
+        try {
+          port = cfg.getInt( PORT );
+          port = NetUtil.validatePort( port );
+          if ( port == 0 ) {
+            Log.error( "Configured port of " + port + " is not a valid port (out of range) - ignoring" );
             port = DEFAULT_PORT;
-            Log.error( "Port configuration option was not a valid integer - ignoring" );
           }
-        } else if ( REDIRECT_PORT.equalsIgnoreCase( field.getName() ) ) {
-          try {
-            redirectport = Integer.parseInt( field.getStringValue() );
-            redirectport = NetUtil.validatePort( redirectport );
-            if ( redirectport == 0 ) {
-              Log.error( "Redirection port of " + redirectport + " is not a valid port (out of range) - ignoring" );
-              redirectport = 0;
-            }
-          } catch ( NumberFormatException e ) {
+        } catch ( NumberFormatException e ) {
+          port = DEFAULT_PORT;
+          Log.error( "Port configuration option was not a valid integer - ignoring" );
+        }
+      }
+
+      if ( cfg.containsIgnoreCase( REDIRECT_PORT ) ) {
+        try {
+          redirectport = cfg.getInt( REDIRECT_PORT );
+          redirectport = NetUtil.validatePort( redirectport );
+          if ( redirectport == 0 ) {
+            Log.error( "Configured port of " + redirectport + " is not a valid port (out of range) - ignoring" );
             redirectport = 0;
-            Log.error( "RedirectPort configuration option was not a valid integer - ignoring" );
+          }
+        } catch ( NumberFormatException e ) {
+          redirectport = 0;
+          Log.error( "RedirectPort configuration option was not a valid integer - ignoring" );
+
+        }
+
+      }
+
+      boolean secureServer;
+      try {
+        secureServer = cfg.getAsBoolean( SECURESERVER );
+      } catch ( DataFrameException e1 ) {
+        secureServer = false;
+      }
+
+      // If we have a valid bind port from the command line arguments, use it instead of configured port
+      if ( bindPort > 0 && bindPort != port ) {
+        Log.warn( "Command line argument of port " + bindPort + " overrides configuration port of " + port );
+        port = bindPort;
+      }
+
+      // create a server with the default mappings
+      server = new HTTPDRouter( port );
+
+      if ( port == 443 || secureServer ) {
+        try {
+          server.makeSecure( HTTPD.makeSSLSocketFactory( "/keystore.jks", "password".toCharArray() ), null );
+        } catch ( IOException e ) {
+          Log.error( "Could not make the server secure: " + e.getMessage() );
+        }
+      }
+
+      // Add the default routes to ensure basic operation
+      server.addDefaultRoutes();
+
+      // remove the root handlers, the configuration will contain our handlers
+      server.removeRoute( "/" );
+      server.removeRoute( "/index.html" );
+
+      List<Config> mapsections = configuration.getSections( MAPPINGS );
+      for ( Config section : mapsections ) {
+        for ( DataField field : section.getFields() ) {
+          if ( field.getName() != null && field.isFrame() ) {
+            loadMapping( field.getName(), new Config( (DataFrame)field.getObjectValue() ) );
           }
         }
       }
-    }
 
-    boolean secureServer;
-    try {
-      secureServer = cfg.getAsBoolean( SECURESERVER );
-    } catch ( DataFrameException e1 ) {
-      secureServer = false;
-    }
-
-    // If we have a valid bind port from the command line arguments, use it instead of configured port
-    if ( bindPort > 0 && bindPort != port ) {
-      Log.warn( "Command line argument of port " + bindPort + " overrides configuration port of " + port );
-      port = bindPort;
-    }
-
-    // create a server with the default mappings
-    server = new HTTPDRouter( port );
-
-    if ( port == 443 || secureServer ) {
-      try {
-        server.makeSecure( HTTPD.makeSSLSocketFactory( "/keystore.jks", "password".toCharArray() ), null );
-      } catch ( IOException e ) {
-        Log.error( "Could not make the server secure: " + e.getMessage() );
-      }
-    }
-
-    // Add the default routes to ensure basic operation
-    server.addDefaultRoutes();
-
-    // remove the root handlers, the configuration will contain our handlers
-    server.removeRoute( "/" );
-    server.removeRoute( "/index.html" );
-
-    List<Config> mapsections = configuration.getSections( MAPPINGS );
-    for ( Config section : mapsections ) {
-      for ( DataField field : section.getFields() ) {
-        if ( field.getName() != null && field.isFrame() ) {
-          loadMapping( field.getName(), new Config( (DataFrame)field.getObjectValue() ) );
+      if ( cfg != null ) {
+        Config sectn = cfg.getSection( GenericAuthProvider.AUTH_SECTION );
+        if ( sectn != null ) {
+          server.setAuthProvider( new GenericAuthProvider( sectn ) );
         }
+
+        // configure the IPACL with any found configuration data; 
+        // localhost only access if no configuration data is found
+        server.configIpACL( cfg.getSection( ConfigTag.IPACL ) );
+
+        // Configure Denial of Service frequency tables
+        server.configDosTables( cfg.getSection( ConfigTag.FREQUENCY ) );
+
+        // if we have no components defined, install a wedge to keep the server open
+        if ( components.size() == 0 ) {
+          Wedge wedge = new Wedge();
+          wedge.setLoader( this );
+          components.put( wedge, cfg );
+          activate( wedge, cfg ); // activate it
+        }
+
+        // configure the server to use our statistics board
+        server.setStatBoard( getStats() );
+
+        // Configure the statistics board to enable collecting metrics
+        try {
+          getStats().enableArm( cfg.getAsBoolean( ENABLE_ARM ) );
+        } catch ( DataFrameException e ) {
+          getStats().enableArm( false );
+        }
+        try {
+          getStats().enableGauges( cfg.getAsBoolean( ENABLE_GAUGES ) );
+        } catch ( DataFrameException e ) {
+          getStats().enableGauges( false );
+        }
+        try {
+          getStats().enableTiming( cfg.getAsBoolean( ENABLE_TIMING ) );
+        } catch ( DataFrameException e ) {
+          getStats().enableTiming( false );
+        }
+
+        // Set our version in the stats board
+        getStats().setVersion( NAME, VERSION );
+
+        if ( redirectport > 0 ) {
+          redirectServer = new RedirectServer( redirectport );
+        }
+
+        Log.info( "Configured server with " + server.getMappings().size() + " mappings" );
       }
-    }
-
-    if ( cfg != null ) {
-      Config sectn = cfg.getSection( GenericAuthProvider.AUTH_SECTION );
-      if ( sectn != null ) {
-        server.setAuthProvider( new GenericAuthProvider( sectn ) );
-      }
-
-      // configure the IPACL with any found configuration data; 
-      // localhost only access if no configuration data is found
-      server.configIpACL( cfg.getSection( ConfigTag.IPACL ) );
-
-      // Configure Denial of Service frequency tables
-      server.configDosTables( cfg.getSection( ConfigTag.FREQUENCY ) );
-
-      // if we have no components defined, install a wedge to keep the server open
-      if ( components.size() == 0 ) {
-        Wedge wedge = new Wedge();
-        wedge.setLoader( this );
-        components.put( wedge, cfg );
-        activate( wedge, cfg ); // activate it
-      }
-
-      // configure the server to use our statistics board
-      server.setStatBoard( getStats() );
-
-      // Configure the statistics board to enable collecting metrics
-      try {
-        getStats().enableArm( cfg.getAsBoolean( ENABLE_ARM ) );
-      } catch ( DataFrameException e ) {
-        getStats().enableArm( false );
-      }
-      try {
-        getStats().enableGauges( cfg.getAsBoolean( ENABLE_GAUGES ) );
-      } catch ( DataFrameException e ) {
-        getStats().enableGauges( false );
-      }
-      try {
-        getStats().enableTiming( cfg.getAsBoolean( ENABLE_TIMING ) );
-      } catch ( DataFrameException e ) {
-        getStats().enableTiming( false );
-      }
-
-      // Set our version in the stats board
-      getStats().setVersion( NAME, VERSION );
-
-      if ( redirectport > 0 ) {
-        redirectServer = new RedirectServer( redirectport );
-      }
-
-      Log.info( "Configured server with " + server.getMappings().size() + " mappings" );
-    }
+    } else {
+      Log.fatal( "No configuration passed to server" );
+    } // if there is a cfg
 
   }
 
