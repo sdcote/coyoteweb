@@ -1,0 +1,48 @@
+{
+	"Class" : "systems.coyote.WebServer",
+	
+	"Port": 443,
+	"RedirectPort" : 80,
+	"SecureServer" : true,
+	"EnableARM" : true,
+ 	"EnableGauges" : true,
+ 	"EnableTiming" : true,
+	
+	"Auth": {
+		"Users":[ 
+			{ "EncryptedName" : "v2UeWqKIv6ph2u35/7iI4joYLUE4U6iH", 
+			  "EncryptedPassword" : "6ntFRYIIv7wyh75cRgqlNzgAdPz/K2mz", 
+			  "EncryptedGroups" : "0HR3uyUplj+VLJTNJTyyUh1VuD36N6nJ0gAADuFsHVENVTBmspLMs0gkTdMFuOYF"
+			}
+		]
+	},
+	
+	"IPACL" : {
+		"default" : "deny",
+		"127.0.0.1" : "allow"
+	},
+		
+	"Mappings" : {
+		"/api/stat/" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
+    	"/api/stat/:metric" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
+    	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
+		"/" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
+		"/(.)+" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
+		
+		"/" : { "Class" : "systems.coyote.handler.ResourceHandler", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  },
+		"/(.)+" : { "Class" : "systems.coyote.handler.ResourceHandler", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
+	},
+	
+	"Components": [
+		{
+		}
+	],
+	
+		
+	"Logging": {
+		"ConsoleAppender": { "target": "STDOUT", "categories": "info, error, fatal, warn" },
+		"CyclingFileAppender": { "target": "debug.log", "categories": "trace, debug, info, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
+		"CyclingFileAppender": { "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
+	}
+
+}
