@@ -27,12 +27,14 @@ import coyote.commons.network.http.handler.Error404UriHandler;
 import coyote.commons.network.http.handler.HTTPDRouter;
 import coyote.commons.network.http.handler.UriResource;
 import coyote.loader.cfg.Config;
+import coyote.loader.log.Log;
 
 
 /**
- * Generic handler to retrieve the requested page from a file root.
+ * Generic handler to retrieve the requested page from a file root of a file 
+ * system.
  * 
- * <p>This allows for serving from the file system like a regular web server.</p>
+ * <p>This allows for serving from the file system like a regular web server.
  */
 public class FileHandler extends DefaultHandler {
 
@@ -80,7 +82,7 @@ public class FileHandler extends DefaultHandler {
 
     // if the file does not exist or is not a file...
     if ( !requestedFile.exists() || !requestedFile.isFile() ) {
-      // throw a 404 at them
+      Log.append( HTTPD.EVENT, "404 NOT FOUND - '" + realUri + "' LOCAL: " + requestedFile.getAbsolutePath() );
       return new Error404UriHandler().get( uriResource, urlParams, session );
     } else {
 
