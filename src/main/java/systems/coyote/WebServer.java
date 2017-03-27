@@ -330,7 +330,7 @@ public class WebServer extends AbstractLoader {
     if ( isActive() ) {
       return;
     }
-
+    Log.info( "Running server with " + server.getMappings().size() + " mappings" );
     try {
       server.start( HTTPD.SOCKET_READ_TIMEOUT, false );
     } catch ( IOException ioe ) {
@@ -528,6 +528,61 @@ public class WebServer extends AbstractLoader {
       return super.serve( session );
     }
 
+  }
+
+
+
+
+  /**
+   * @return the port on which this server is listening or 0 if the server is not running.
+   */
+  public int getPort() {
+    if ( server != null )
+      return server.getPort();
+    else
+      return 0;
+  }
+
+
+
+
+  /**
+   * Add a handler at the given route
+   * 
+   * @param route the route regular expression
+   * @param handler the handler class
+   * @param initParams initialization parameters
+   */
+  void addHandler( final String route, final Class<?> handler, final Object... initParams ) {
+    server.addRoute( route, 100, handler, this, new Config(), initParams );
+  }
+
+
+
+
+  /**
+   * Run the server in a separate thread.
+   * 
+   * @return the thread in which the server is running
+   */
+  public Thread execute() {
+    shutdown = false;
+    Thread serverThread = new Thread( new Runnable() {
+      @Override
+      public void run() {
+       start();
+      }
+    } );
+
+    // start the thread running, calling this server start()
+    serverThread.start();
+    try {
+      Thread.sleep( 200 );
+    } catch ( InterruptedException e ) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return serverThread;
   }
 
 }

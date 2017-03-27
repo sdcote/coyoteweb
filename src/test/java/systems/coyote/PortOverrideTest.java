@@ -11,12 +11,20 @@
  */
 package systems.coyote;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import coyote.commons.NetUtil;
+import coyote.commons.network.http.HTTPD;
+import coyote.loader.cfg.Config;
+import coyote.loader.log.ConsoleAppender;
+import coyote.loader.log.Log;
+
 
 /**
  * This tests the ability to specify and override the bind port from the 
@@ -24,11 +32,37 @@ import org.junit.Test;
  */
 public class PortOverrideTest {
 
+  private static int port = NetUtil.getNextAvailablePort( 7428 );
+  private static Thread serverThread;
+  private static WebServer server = null;
+
+
+
+
   /**
    * @throws java.lang.Exception
    */
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {}
+  public static void setUpBeforeClass() throws Exception {
+
+    Log.addLogger( Log.DEFAULT_LOGGER_NAME, new ConsoleAppender( Log.TRACE_EVENTS | Log.DEBUG_EVENTS | Log.INFO_EVENTS | Log.WARN_EVENTS | Log.ERROR_EVENTS | Log.FATAL_EVENTS | HTTPD.EVENT ) );
+
+    // create a server
+    server = new WebServer();
+
+    // mimic the command line arguments
+    server.setCommandLineArguments( new String[] { "caller", "arg", "-p", Integer.toString( port ) } );
+
+    // configure it
+    server.configure( new Config() );
+    server.addHandler( "/", systems.coyote.handler.ResourceHandler.class, "123" );
+    server.addHandler( "/(.)+", systems.coyote.handler.ResourceHandler.class, "ABC" );
+
+    // run the server in a separate thread, returning that thread
+    serverThread = server.execute();
+    server.waitForActive( 1000 );
+    System.out.println( "Server is on port " + server.getPort() );
+  }
 
 
 
@@ -37,14 +71,30 @@ public class PortOverrideTest {
    * @throws java.lang.Exception
    */
   @AfterClass
-  public static void tearDownAfterClass() throws Exception {}
+  public static void tearDownAfterClass() throws Exception {
+    server.shutdown();
+    serverThread.join( 2000 );
+    Assert.assertFalse( serverThread.isAlive() );
+  }
 
 
 
 
-  @Ignore
+  @Test
   public void test() {
-    fail( "Not yet implemented" ); // TODO
+    assertTrue( server.isActive() );
+    assertTrue(server.getPort()==port);
+  }
+
+
+
+
+  @Test
+  public void testConnect() {
+    final TestResponse response = TestClient.sendGet( "http://localhost:" + port );
+    System.out.println( response.getStatus() );
+    //assertTrue( response.isComplete() );
+    //assertEquals( response.getStatus(), 200 );
   }
 
 }
