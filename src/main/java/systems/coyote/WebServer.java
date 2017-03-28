@@ -592,11 +592,9 @@ public class WebServer extends AbstractLoader {
     // start the thread running, calling this server start()
     serverThread.start();
     try {
+      Thread.yield();
       Thread.sleep( 200 );
-    } catch ( InterruptedException e ) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    } catch ( InterruptedException e ) {}
     return serverThread;
   }
 
