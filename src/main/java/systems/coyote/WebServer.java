@@ -547,14 +547,29 @@ public class WebServer extends AbstractLoader {
 
 
   /**
-   * Add a handler at the given route
+   * Add a handler at the given route.
+   * 
+   * <p>This is intended for the programmatic or embedded use of the server in 
+   * code. 
    * 
    * @param route the route regular expression
    * @param handler the handler class
    * @param initParams initialization parameters
    */
   void addHandler( final String route, final Class<?> handler, final Object... initParams ) {
-    server.addRoute( route, 100, handler, this, new Config(), initParams );
+    Object[] params;
+    if ( initParams != null ) {
+      params = new Object[initParams.length + 2];
+      params[0] = this;
+      params[1] = new Config();
+      for ( int x = 0; x < initParams.length; x++ ) {
+        params[x + 2] = initParams[x];
+      }
+    } else {
+      params = new Object[] { this, new Config() };
+    }
+
+    server.addRoute( route, 100, handler, params );
   }
 
 
@@ -570,7 +585,7 @@ public class WebServer extends AbstractLoader {
     Thread serverThread = new Thread( new Runnable() {
       @Override
       public void run() {
-       start();
+        start();
       }
     } );
 

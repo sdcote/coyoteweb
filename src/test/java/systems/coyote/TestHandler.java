@@ -37,12 +37,14 @@ public class TestHandler extends DefaultHandler {
     // These initialization parameters always exist
     WebServer loader = uriResource.initParameter( 0, WebServer.class );
     Config config = uriResource.initParameter( 1, Config.class );
-    
+
     // if there are more, then assume the next one is our test data
     if ( uriResource.getInitParameterLength() > 2 ) {
-      testData = uriResource.initParameter( 2, String.class );
+      if ( uriResource.initParameter( 2, Object.class ) instanceof String ) {
+        testData = uriResource.initParameter( 2, String.class );
+      }
     }
-    
+
     return Response.createFixedLengthResponse( getStatus(), getMimeType(), getText() );
   }
 

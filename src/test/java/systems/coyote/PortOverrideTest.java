@@ -55,13 +55,11 @@ public class PortOverrideTest {
 
     // configure it
     server.configure( new Config() );
-    server.addHandler( "/", systems.coyote.handler.ResourceHandler.class, "123" );
-    server.addHandler( "/(.)+", systems.coyote.handler.ResourceHandler.class, "ABC" );
+    server.addHandler( "/", systems.coyote.TestHandler.class, "123" );
 
     // run the server in a separate thread, returning that thread
     serverThread = server.execute();
     server.waitForActive( 1000 );
-    System.out.println( "Server is on port " + server.getPort() );
   }
 
 
@@ -83,7 +81,7 @@ public class PortOverrideTest {
   @Test
   public void test() {
     assertTrue( server.isActive() );
-    assertTrue(server.getPort()==port);
+    assertTrue( server.getPort() == port );
   }
 
 
@@ -92,9 +90,9 @@ public class PortOverrideTest {
   @Test
   public void testConnect() {
     final TestResponse response = TestClient.sendGet( "http://localhost:" + port );
-    System.out.println( response.getStatus() );
-    //assertTrue( response.isComplete() );
-    //assertEquals( response.getStatus(), 200 );
+    assertTrue( response.isComplete() );
+    assertEquals( response.getStatus(), 200 );
+    assertEquals( "123", response.getData() );
   }
 
 }
