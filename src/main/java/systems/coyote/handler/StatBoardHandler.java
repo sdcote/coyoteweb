@@ -45,11 +45,8 @@ import systems.coyote.WebServer;
  * If no metric or name is given, then the entire statistics board is 
  * serialized as a response. If a metric is given, but no name then all the 
  * metrics of that type are returned. Otherwise just the named metric is returned.
- * 
- * <p>Authentication is performed, but not required so logged-in user can be 
- * identified for logging purposes.
  */
-@Auth(required = false)
+@Auth
 public class StatBoardHandler extends AbstractJsonHandler implements UriResponder {
   private static final String ARM = "ARM";
   private static final String TIMER = "Timer";
@@ -155,16 +152,16 @@ public class StatBoardHandler extends AbstractJsonHandler implements UriResponde
 
     // Get all counters
     childPacket.clear();
-    for ( Iterator it = statboard.getCounterIterator(); it.hasNext(); ) {
-      Counter counter = (Counter)it.next();
+    for ( Iterator<Counter> it = statboard.getCounterIterator(); it.hasNext(); ) {
+      Counter counter = it.next();
       childPacket.add( counter.getName(), new Long( counter.getValue() ) );
     }
     retval.add( COUNTER, childPacket );
 
     // Get all states
     childPacket.clear();
-    for ( Iterator it = statboard.getStateIterator(); it.hasNext(); ) {
-      State state = (State)it.next();
+    for ( Iterator<State> it = statboard.getStateIterator(); it.hasNext(); ) {
+      State state = it.next();
       if ( state.getValue() != null ) {
         childPacket.add( state.getName(), state.getValue() );
       } else {
@@ -174,8 +171,8 @@ public class StatBoardHandler extends AbstractJsonHandler implements UriResponde
     retval.add( STATE, childPacket );
 
     childPacket.clear();
-    for ( Iterator it = statboard.getGaugeIterator(); it.hasNext(); ) {
-      DataFrame packet = ( (Gauge)it.next() ).toFrame();
+    for ( Iterator<Gauge> it = statboard.getGaugeIterator(); it.hasNext(); ) {
+      DataFrame packet = it.next().toFrame();
       if ( packet != null ) {
         childPacket.add( packet );
       }
@@ -183,8 +180,8 @@ public class StatBoardHandler extends AbstractJsonHandler implements UriResponde
     retval.add( GAUGE, childPacket );
 
     childPacket.clear();
-    for ( Iterator it = statboard.getTimerIterator(); it.hasNext(); ) {
-      DataFrame cap = ( (TimingMaster)it.next() ).toFrame();
+    for ( Iterator<TimingMaster> it = statboard.getTimerIterator(); it.hasNext(); ) {
+      DataFrame cap = it.next().toFrame();
       if ( cap != null ) {
         childPacket.add( cap );
       }
@@ -192,8 +189,8 @@ public class StatBoardHandler extends AbstractJsonHandler implements UriResponde
     retval.add( TIMER, childPacket );
 
     childPacket.clear();
-    for ( Iterator it = statboard.getArmIterator(); it.hasNext(); ) {
-      DataFrame cap = ( (ArmMaster)it.next() ).toFrame();
+    for ( Iterator<ArmMaster> it = statboard.getArmIterator(); it.hasNext(); ) {
+      DataFrame cap = it.next().toFrame();
       if ( cap != null ) {
         childPacket.add( cap );
       }
