@@ -9,6 +9,8 @@
  	"EnableTiming" : true,
 	
 	"Auth": {
+		"SendAuthRequestOnFailure": true,
+		"AllowUnsecuredConnections":false,
 		"Users":[ 
 			{ "EncryptedName" : "v2UeWqKIv6ph2u35/7iI4joYLUE4U6iH", 
 			  "EncryptedPassword" : "6ntFRYIIv7wyh75cRgqlNzgAdPz/K2mz", 
