@@ -72,7 +72,7 @@ public class WebServer extends AbstractLoader {
   private HTTPD redirectServer = null;
 
   /** The version of this server. */
-  public static final Version VERSION = new Version( 0, 0, 2, Version.EXPERIMENTAL );
+  public static final Version VERSION = new Version( 0, 0, 2, Version.DEVELOPMENT );
 
   // the port on which this server listens, defaults to 80
   private static final String PORT = "Port";
@@ -169,21 +169,8 @@ public class WebServer extends AbstractLoader {
         }
       }
 
-      // Add the default routes to ensure basic operation
-      server.addDefaultRoutes();
-
-      // remove the root handlers, the configuration will contain our handlers
-      server.removeRoute( "/" );
-      server.removeRoute( "/index.html" );
-
-      List<Config> mapsections = configuration.getSections( MAPPINGS );
-      for ( Config section : mapsections ) {
-        for ( DataField field : section.getFields() ) {
-          if ( field.getName() != null && field.isFrame() ) {
-            loadMapping( field.getName(), new Config( (DataFrame)field.getObjectValue() ) );
-          }
-        }
-      }
+      // At this point the servers are up, but nothing is being served.
+      // Configure security, and add handlers; in that order
 
       if ( cfg != null ) {
         Config sectn = cfg.getSection( GenericAuthProvider.AUTH_SECTION );
@@ -198,6 +185,22 @@ public class WebServer extends AbstractLoader {
         // Configure Denial of Service frequency tables
         server.configDosTables( cfg.getSection( ConfigTag.FREQUENCY ) );
 
+        
+        // Add the default routes to ensure basic operation
+        server.addDefaultRoutes();
+
+        // remove the root handlers, the configuration will contain our handlers
+        server.removeRoute( "/" );
+        server.removeRoute( "/index.html" );
+
+        List<Config> mapsections = cfg.getSections( MAPPINGS );
+        for ( Config section : mapsections ) {
+          for ( DataField field : section.getFields() ) {
+            if ( field.getName() != null && field.isFrame() ) {
+              loadMapping( field.getName(), new Config( (DataFrame)field.getObjectValue() ) );
+            }
+          }
+        }
         // if we have no components defined, install a wedge to keep the server open
         if ( components.size() == 0 ) {
           Wedge wedge = new Wedge();
@@ -359,11 +362,8 @@ public class WebServer extends AbstractLoader {
 
     // Parse through the configuration and initialize all the components
     initComponents();
-
     Log.info( LogMsg.createMsg( MSG, "Loader.components_initialized" ) );
 
-    // By this time all loggers (including the catch-all logger) should be
-    // open
     final StringBuffer b = new StringBuffer( NAME );
     b.append( " v" );
     b.append( VERSION.toString() );
