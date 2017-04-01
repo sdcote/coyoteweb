@@ -11,8 +11,14 @@
  */
 package systems.coyote.handler;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import coyote.commons.network.MimeType;
+import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
+import coyote.commons.network.http.ResponseException;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.handler.DefaultHandler;
 import coyote.commons.network.http.handler.UriResponder;
@@ -43,10 +49,32 @@ public abstract class AbstractJsonHandler extends DefaultHandler implements UriR
 
 
   /**
-   * @param flag true to cause getText() to return formatted JSON, false (default) to represent it in compressed format.
+   * @param flag true to cause getText() to return formatted JSON, false 
+   *        (default) to represent it in compressed format.
    */
   public void setFormattingJson( boolean flag ) {
     this.formattingJson = flag;
+  }
+
+
+
+
+  /**
+   * Parse the body of the request into parameters and or a list of named file 
+   * chunks.
+   * 
+   * @param session the session containing the request
+   * 
+   * @return a list of file chunks, may be empty, but never null.
+   * 
+   * @throws IOException if there are problems reading the request stream
+   * @throws ResponseException if there a logical HTTP issues with the format 
+   *         or encoding of the body 
+   */
+  public Map<String, String> parseBody( final IHTTPSession session ) throws IOException, ResponseException {
+    final Map<String, String> files = new HashMap<String, String>();
+    session.parseBody( files );
+    return files;
   }
 
 
@@ -75,4 +103,5 @@ public abstract class AbstractJsonHandler extends DefaultHandler implements UriR
   public String getMimeType() {
     return MimeType.JSON.getType();
   }
+
 }
