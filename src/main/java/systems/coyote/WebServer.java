@@ -19,6 +19,8 @@ import java.util.Set;
 import coyote.commons.NetUtil;
 import coyote.commons.StringUtil;
 import coyote.commons.Version;
+import coyote.commons.network.IpAddress;
+import coyote.commons.network.IpNetwork;
 import coyote.commons.network.MimeType;
 import coyote.commons.network.http.HTTP;
 import coyote.commons.network.http.HTTPD;
@@ -185,7 +187,6 @@ public class WebServer extends AbstractLoader {
         // Configure Denial of Service frequency tables
         server.configDosTables( cfg.getSection( ConfigTag.FREQUENCY ) );
 
-        
         // Add the default routes to ensure basic operation
         server.addDefaultRoutes();
 
@@ -425,6 +426,36 @@ public class WebServer extends AbstractLoader {
     if ( redirectServer != null ) {
       redirectServer.stop();
     }
+  }
+
+
+
+
+  /**
+   * Add the given IP address to the server blacklist.
+   * 
+   * <p>This results in any TCP connection from this address being dropped by 
+   * the HTTPD server before any HTTP processing.
+   * 
+   * @param address The address to ban from this server
+   */
+  public synchronized void blacklist( IpAddress address ) {
+    blacklist( new IpNetwork( address, IpNetwork.HOSTMASK ) );
+  }
+
+
+
+
+  /**
+   * Add the given IP network to the server blacklist.
+   * 
+   * <p>This results in any TCP connection from any address in this network 
+   * being dropped by the HTTPD server before any HTTP processing.
+   * 
+   * @param network The address to ban from this server
+   */
+  public synchronized void blacklist( IpNetwork network ) {
+    server.addToACL( network, false );
   }
 
   //
