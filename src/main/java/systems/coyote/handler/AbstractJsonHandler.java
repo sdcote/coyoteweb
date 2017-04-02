@@ -28,12 +28,28 @@ import coyote.dataframe.marshal.JSONMarshaler;
 
 /**
  * This is a common base class for handlers which implement a JSON web service 
- * pattern. 
+ * pattern.
+ * 
+ * <p>At the core is a {@code results} DataFrame used to hold the results of 
+ * processing. Later, the {@link #getText()} can be called to retrieve the 
+ * JSON formatted data contained therein. 
  */
 public abstract class AbstractJsonHandler extends DefaultHandler implements UriResponder {
 
   protected final DataFrame results = new DataFrame();
   private boolean formattingJson = false;
+
+
+
+
+  /**
+   * @return the results DataFrame into which the results of processing is to 
+   *         be placed for later marshaling into JSON text when the {@link 
+   *         #getText()} method is called.
+   */
+  public DataFrame getResults() {
+    return results;
+  }
 
 
 
