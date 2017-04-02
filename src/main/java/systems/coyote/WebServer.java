@@ -456,6 +456,10 @@ public class WebServer extends AbstractLoader {
    */
   public synchronized void blacklist( IpNetwork network ) {
     server.addToACL( network, false );
+    if ( Log.isLogging( Log.DEBUG_EVENTS ) ) {
+      Log.append( HTTPD.EVENT, "Blacklisted " + network.toString() );
+      Log.append( HTTPD.EVENT, "ACL: " + server.getIpAcl().toString() );
+    }
   }
 
   //
