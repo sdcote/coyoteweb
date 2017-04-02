@@ -74,7 +74,7 @@ public class WebServer extends AbstractLoader {
   private HTTPD redirectServer = null;
 
   /** The version of this server. */
-  public static final Version VERSION = new Version( 0, 0, 2, Version.DEVELOPMENT );
+  public static final Version VERSION = new Version( 0, 0, 3, Version.DEVELOPMENT );
 
   // the port on which this server listens, defaults to 80
   private static final String PORT = "Port";
