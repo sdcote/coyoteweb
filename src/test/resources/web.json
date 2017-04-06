@@ -30,8 +30,9 @@
     	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.responder.StatBoardResponder" },
 		"/api/log" : { "Class" : "systems.coyote.responder.LogResponder" },
     	"/api/log/:name" : { "Class" : "systems.coyote.responder.LogResponder" },
-		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content"  },
-		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content"  },
+    	
+		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content", "Priority" : 16383 },
+		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content", "Priority" : 16383 },
 		
 		"/" : { "Class" : "systems.coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  },
 		"/(.)+" : { "Class" : "systems.coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
