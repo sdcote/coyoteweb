@@ -25,12 +25,11 @@
 	},
 		
 	"Mappings" : {
-		"/api/stat/" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
+		"/api/stat" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
     	"/api/stat/:metric" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
     	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
-		"/api/log/" : { "Class" : "systems.coyote.handler.LogHandler" },
+		"/api/log" : { "Class" : "systems.coyote.handler.LogHandler" },
     	"/api/log/:name" : { "Class" : "systems.coyote.handler.LogHandler" },
-    	"/api/log/:name/:type" : { "Class" : "systems.coyote.handler.LogHandler" },
 		"/" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
 		"/(.)+" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
 		
@@ -45,9 +44,9 @@
 	
 		
 	"Logging": {
-		"ConsoleAppender": { "target": "STDOUT", "categories": "info, error, fatal, warn" },
-		"CyclingFileAppender": { "target": "debug.log", "categories": "trace, debug, info, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
-		"CyclingFileAppender": { "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
+		"ConsoleAppender": { "name": "default", "target": "STDOUT", "categories": "info, error, fatal, warn" },
+		"CyclingFileAppender": { "name": "debug", "target": "debug.log", "categories": "trace, debug, info, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
+		"CyclingFileAppender": { "name": "http", "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
 	}
 
 }
