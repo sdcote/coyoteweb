@@ -14,8 +14,10 @@ package systems.coyote.handler;
 import java.util.Enumeration;
 import java.util.Map;
 
+import coyote.commons.StringUtil;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
+import coyote.commons.network.http.Status;
 import coyote.commons.network.http.auth.Auth;
 import coyote.commons.network.http.handler.UriResource;
 import coyote.commons.network.http.handler.UriResponder;
@@ -68,15 +70,39 @@ public class LogHandler extends AbstractJsonHandler implements UriResponder {
     Config config = uriResource.initParameter( 1, Config.class );
     setFormattingJson( true );
 
-    DataFrame loggers = new DataFrame();
-    for ( Enumeration<String> e = LogTool.getLoggerNames(); e.hasMoreElements(); ) {
-      String name = e.nextElement();
+    // Get the command from the URL parameters specified when we were registered with the router 
+    String name = urlParams.get( "name" );
+    String type = urlParams.get( "type" );
+
+    if ( StringUtil.isBlank( name ) ) {
+      DataFrame loggers = new DataFrame();
+      for ( Enumeration<String> e = LogTool.getLoggerNames(); e.hasMoreElements(); ) {
+        String loggername = e.nextElement();
+        Logger logger = LogTool.getLogger( loggername );
+        loggers.add( loggername, logger.getConfig() );
+      }
+      results.add( "Loggers", loggers );
+    } else {
       Logger logger = LogTool.getLogger( name );
-      loggers.add( name, logger.getConfig() );
+      if( logger != null ){
+      if ( "html".equalsIgnoreCase( type ) ) {
+
+      } else {
+
+      }
+      } else {
+        setStatus(Status.NOT_FOUND);
+      }
     }
-    results.add( "Loggers", loggers );
 
     return Response.createFixedLengthResponse( super.getStatus(), super.getMimeType(), super.getText() );
   }
-  
+
+  /**
+   * @param status the status to set in this handler
+   */
+  private void setStatus( IStatus status ) {
+    super.st
+  }
+
 }
