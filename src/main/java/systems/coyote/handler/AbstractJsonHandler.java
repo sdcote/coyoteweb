@@ -38,6 +38,7 @@ public abstract class AbstractJsonHandler extends DefaultHandler implements UriR
 
   protected final DataFrame results = new DataFrame();
   private boolean formattingJson = false;
+  protected IStatus resultStatus = Status.OK;
 
 
 
@@ -98,7 +99,17 @@ public abstract class AbstractJsonHandler extends DefaultHandler implements UriR
 
   @Override
   public IStatus getStatus() {
-    return Status.OK;
+    return resultStatus;
+  }
+
+
+
+
+  /**
+   * @param status the response status to set
+   */
+  public void setStatus( IStatus status ) {
+    this.resultStatus = status;
   }
 
 

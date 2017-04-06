@@ -109,7 +109,7 @@ public class StatBoardHandler extends AbstractJsonHandler implements UriResponde
     }
 
     // create a response using the superclass methods
-    return Response.createFixedLengthResponse( super.getStatus(), super.getMimeType(), super.getText() );
+    return Response.createFixedLengthResponse( getStatus(), getMimeType(), getText() );
   }
 
 
