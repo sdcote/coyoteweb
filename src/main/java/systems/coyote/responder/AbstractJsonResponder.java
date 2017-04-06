@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.handler;
+package systems.coyote.responder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,8 +20,8 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
 import coyote.commons.network.http.ResponseException;
 import coyote.commons.network.http.Status;
-import coyote.commons.network.http.handler.DefaultHandler;
-import coyote.commons.network.http.handler.UriResponder;
+import coyote.commons.network.http.responder.DefaultResponder;
+import coyote.commons.network.http.responder.Responder;
 import coyote.dataframe.DataFrame;
 import coyote.dataframe.marshal.JSONMarshaler;
 
@@ -34,7 +34,7 @@ import coyote.dataframe.marshal.JSONMarshaler;
  * processing. Later, the {@link #getText()} can be called to retrieve the 
  * JSON formatted data contained therein. 
  */
-public abstract class AbstractJsonHandler extends DefaultHandler implements UriResponder {
+public abstract class AbstractJsonResponder extends DefaultResponder implements Responder {
 
   protected final DataFrame results = new DataFrame();
   private boolean formattingJson = false;

@@ -29,7 +29,7 @@ import coyote.commons.network.http.Response;
 import coyote.commons.network.http.SecurityResponseException;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.auth.GenericAuthProvider;
-import coyote.commons.network.http.handler.HTTPDRouter;
+import coyote.commons.network.http.responder.HTTPDRouter;
 import coyote.dataframe.DataField;
 import coyote.dataframe.DataFrame;
 import coyote.dataframe.DataFrameException;

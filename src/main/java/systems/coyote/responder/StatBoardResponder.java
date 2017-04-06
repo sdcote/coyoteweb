@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and initial implementation
  */
-package systems.coyote.handler;
+package systems.coyote.responder;
 
 import java.net.InetAddress;
 import java.util.Iterator;
@@ -20,8 +20,8 @@ import coyote.commons.StringUtil;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.auth.Auth;
-import coyote.commons.network.http.handler.UriResource;
-import coyote.commons.network.http.handler.UriResponder;
+import coyote.commons.network.http.responder.Responder;
+import coyote.commons.network.http.responder.UriResource;
 import coyote.dataframe.DataFrame;
 import coyote.i13n.ArmMaster;
 import coyote.i13n.Counter;
@@ -47,7 +47,7 @@ import systems.coyote.WebServer;
  * metrics of that type are returned. Otherwise just the named metric is returned.
  */
 @Auth
-public class StatBoardHandler extends AbstractJsonHandler implements UriResponder {
+public class StatBoardResponder extends AbstractJsonResponder implements Responder {
   private static final String ARM = "ARM";
   private static final String TIMER = "Timer";
   private static final String GAUGE = "Gauge";

@@ -8,7 +8,7 @@
  * Contributors:
  *   Stephan D. Cote 
  */
-package systems.coyote.handler;
+package systems.coyote.responder;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,10 +22,10 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
-import coyote.commons.network.http.handler.DefaultHandler;
-import coyote.commons.network.http.handler.Error404UriHandler;
-import coyote.commons.network.http.handler.HTTPDRouter;
-import coyote.commons.network.http.handler.UriResource;
+import coyote.commons.network.http.responder.DefaultResponder;
+import coyote.commons.network.http.responder.Error404Responder;
+import coyote.commons.network.http.responder.HTTPDRouter;
+import coyote.commons.network.http.responder.UriResource;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
 
@@ -36,7 +36,7 @@ import coyote.loader.log.Log;
  * 
  * <p>This allows for serving from the file system like a regular web server.
  */
-public class FileHandler extends DefaultHandler {
+public class FileResponder extends DefaultResponder {
 
   private static final String ROOT = "Root";
   private static final String DEFAULT_ROOT = "content";
@@ -83,7 +83,7 @@ public class FileHandler extends DefaultHandler {
     // if the file does not exist or is not a file...
     if ( !requestedFile.exists() || !requestedFile.isFile() ) {
       Log.append( HTTPD.EVENT, "404 NOT FOUND - '" + realUri + "' LOCAL: " + requestedFile.getAbsolutePath() );
-      return new Error404UriHandler().get( uriResource, urlParams, session );
+      return new Error404Responder().get( uriResource, urlParams, session );
     } else {
 
       // return the found file

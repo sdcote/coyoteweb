@@ -1,4 +1,4 @@
-package systems.coyote.handler;
+package systems.coyote.responder;
 
 import java.net.URL;
 import java.util.Map;
@@ -10,13 +10,12 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
-import coyote.commons.network.http.handler.DefaultHandler;
-import coyote.commons.network.http.handler.Error404UriHandler;
-import coyote.commons.network.http.handler.HTTPDRouter;
-import coyote.commons.network.http.handler.UriResource;
+import coyote.commons.network.http.responder.DefaultResponder;
+import coyote.commons.network.http.responder.Error404Responder;
+import coyote.commons.network.http.responder.HTTPDRouter;
+import coyote.commons.network.http.responder.UriResource;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
-import systems.coyote.WebServer;
 
 
 /**
@@ -33,14 +32,14 @@ import systems.coyote.WebServer;
  * addRoute( "/(.)+", ResourceHandler.class, "content" );
  * 
  */
-public class ResourceHandler extends DefaultHandler {
+public class ResourceResponder extends DefaultResponder {
   // The configuration parameter containing the root of the content
   private static final String ROOT = "Root";
   private static final String REDIRECT = "RedirectOnIndexedDir";
 
   // The default root namespace of our content
   private static final String DEFAULT_ROOT = "content";
-  
+
   private boolean redirectOnIndexedDir = false;
 
   // The class loader object associated with this Class
@@ -92,12 +91,12 @@ public class ResourceHandler extends DefaultHandler {
     // Check if we should send a 301 redirect when the request is for a 
     // directory and we found an index file in that location which can be 
     // served instead
-      try {
-        redirectOnIndexedDir = config.getAsBoolean( REDIRECT );
-      } catch ( Exception e ) {
-        Log.append( HTTPD.EVENT, "ResourceHandler initialization error: Redirect On Indexed Directory: " + e.getMessage() + " - defaulting to true" );
-      }
-    
+    try {
+      redirectOnIndexedDir = config.getAsBoolean( REDIRECT );
+    } catch ( Exception e ) {
+      Log.append( HTTPD.EVENT, "ResourceHandler initialization error: Redirect On Indexed Directory: " + e.getMessage() + " - defaulting to true" );
+    }
+
     final String baseUri = uriResource.getUri(); // the regex matcher URL
 
     String coreRequest = HTTPDRouter.normalizeUri( session.getUri() );
@@ -110,7 +109,6 @@ public class ResourceHandler extends DefaultHandler {
       }
     }
 
-        
     try {
       if ( StringUtil.isBlank( parentdirectory ) ) {
         parentdirectory = DEFAULT_ROOT;
@@ -118,8 +116,6 @@ public class ResourceHandler extends DefaultHandler {
     } catch ( Exception e ) {
       Log.append( HTTPD.EVENT, "ResourceHandler initialization error: Parent Directory: " + e.getMessage() + " - defaulting to '" + DEFAULT_ROOT + "'" );
     }
-
-   
 
     // make sure we are configured with a properly formatted parent directory
     if ( !parentdirectory.endsWith( "/" ) ) {
@@ -146,7 +142,7 @@ public class ResourceHandler extends DefaultHandler {
           Log.append( HTTPD.EVENT, "There does not appear to be an index file in the content root (" + parentdirectory + ") of the classpath." );
         }
         Log.append( HTTPD.EVENT, "404 NOT FOUND - '" + coreRequest + "'" );
-        return new Error404UriHandler().get( uriResource, urlParams, session );
+        return new Error404Responder().get( uriResource, urlParams, session );
       } else {
         if ( redirectOnIndexedDir ) {
           // We need to send a 301, indicating the new (proper) URL to use
@@ -171,7 +167,7 @@ public class ResourceHandler extends DefaultHandler {
       // if we have no URL, the class loader could not find the resource 
       if ( rsc == null ) {
         Log.append( HTTPD.EVENT, "404 NOT FOUND - '" + coreRequest + "' LOCAL: " + localPath );
-        return new Error404UriHandler().get( uriResource, urlParams, session );
+        return new Error404Responder().get( uriResource, urlParams, session );
       } else {
         // Success - Found the resource - 
         try {

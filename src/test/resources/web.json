@@ -25,16 +25,16 @@
 	},
 		
 	"Mappings" : {
-		"/api/stat" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
-    	"/api/stat/:metric" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
-    	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
-		"/api/log" : { "Class" : "systems.coyote.handler.LogHandler" },
-    	"/api/log/:name" : { "Class" : "systems.coyote.handler.LogHandler" },
-		"/" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
-		"/(.)+" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
+		"/api/stat" : { "Class" : "systems.coyote.responder.StatBoardResponder" },
+    	"/api/stat/:metric" : { "Class" : "systems.coyote.responder.StatBoardResponder" },
+    	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.responder.StatBoardResponder" },
+		"/api/log" : { "Class" : "systems.coyote.responder.LogResponder" },
+    	"/api/log/:name" : { "Class" : "systems.coyote.responder.LogResponder" },
+		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content"  },
+		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content"  },
 		
-		"/" : { "Class" : "systems.coyote.handler.ResourceHandler", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  },
-		"/(.)+" : { "Class" : "systems.coyote.handler.ResourceHandler", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
+		"/" : { "Class" : "systems.coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  },
+		"/(.)+" : { "Class" : "systems.coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
 	},
 	
 	"Components": [

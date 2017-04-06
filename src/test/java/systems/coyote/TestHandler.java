@@ -17,15 +17,15 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
-import coyote.commons.network.http.handler.DefaultHandler;
-import coyote.commons.network.http.handler.UriResource;
+import coyote.commons.network.http.responder.DefaultResponder;
+import coyote.commons.network.http.responder.UriResource;
 import coyote.loader.cfg.Config;
 
 
 /**
  * A simple handler for testing
  */
-public class TestHandler extends DefaultHandler {
+public class TestHandler extends DefaultResponder {
   private String testData = "Hello";
 
 

@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.handler;
+package systems.coyote.responder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,8 +26,8 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.auth.Auth;
-import coyote.commons.network.http.handler.UriResource;
-import coyote.commons.network.http.handler.UriResponder;
+import coyote.commons.network.http.responder.Responder;
+import coyote.commons.network.http.responder.UriResource;
 import coyote.dataframe.DataFrame;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
@@ -65,7 +65,7 @@ import systems.coyote.WebServer;
  * Auth annotation ensures only authenticated users can access this handler
  */
 @Auth
-public class LogHandler extends AbstractJsonHandler implements UriResponder {
+public class LogResponder extends AbstractJsonResponder implements Responder {
   private static final String HDR_LOG_SIZE = "X-Log-Size";
   private static final String OFFSET = "offset";
   private static final long DEFAULT_OFFSET_FROM_END = 1024;
