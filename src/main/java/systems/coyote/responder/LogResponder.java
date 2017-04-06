@@ -39,8 +39,8 @@ import systems.coyote.WebServer;
 /**
  * Access logs on the system
  * offset = number of bytes from the beginning of the log
- * search = regex for a pattern to search for in the logs. The results will be complete lines of data containing the pattern (for each line, if line.matchesXXX, send)
- * limit = stop after limit bytes of data (default is 4096 bytes)
+ * TODO: search = regex for a pattern to search for in the logs. The results will be complete lines of data containing the pattern (for each line, if line.matchesXXX, send)
+ * TODO: parameters can be combined, search starting from and offset,
  * 
  * Configuration:
  * "/api/log/" : { "Class" : "systems.coyote.handler.LogHandler" },
@@ -54,13 +54,11 @@ import systems.coyote.WebServer;
  * The response will contain a chunk of the log output, as well as the {@code X-Log-Size} header that represents the bytes offset (of the raw log file). This is the number you want to use as the {@code offset} parameter for the next call.
  * get /name?offset=0 (raw text of the file)
  * 
- * Controlling Loggers and Logging by setting attributes:
- * put / change global attributes of the logging system (e.g. log mask) - use GET / to see what can be set
- * put /name change the attribute of the logger (apply the name value pair of the parameters) - use GET / to see what can be set
- * 
- * post / create a logger with the given (JSON) configuration
- * 
- * delete /name  cycle the log target, archiving the existing data and starting with a new log
+ * TODO: Controlling Loggers and Logging by setting attributes:
+ * TODO: put / change global attributes of the logging system (e.g. log mask) - use GET / to see what can be set
+ * TODO: put /name change the attribute of the logger (apply the name value pair of the parameters) - use GET / to see what can be set
+ * TODO: post / create a logger with the given (JSON) configuration
+ * TODO: delete /name  cycle the log target, archiving the existing data and starting with a new log
  * 
  * Auth annotation ensures only authenticated users can access this handler
  */
