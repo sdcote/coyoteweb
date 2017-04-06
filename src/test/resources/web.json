@@ -25,12 +25,11 @@
 	},
 		
 	"Mappings" : {
-		"/api/stat/" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
+		"/api/stat" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
     	"/api/stat/:metric" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
     	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.handler.StatBoardHandler" },
-		"/api/log/" : { "Class" : "systems.coyote.handler.LogHandler" },
+		"/api/log" : { "Class" : "systems.coyote.handler.LogHandler" },
     	"/api/log/:name" : { "Class" : "systems.coyote.handler.LogHandler" },
-    	"/api/log/:name/:type" : { "Class" : "systems.coyote.handler.LogHandler" },
 		"/" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
 		"/(.)+" : { "Class" : "systems.coyote.handler.FileHandler", "root":"src/main/resources/content"  },
 		
