@@ -106,7 +106,7 @@ public abstract class AbstractJsonHandler extends DefaultHandler implements UriR
 
 
   /**
-   * @param status the status to set
+   * @param status the response status to set
    */
   public void setStatus( IStatus status ) {
     this.resultStatus = status;
