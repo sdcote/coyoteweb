@@ -82,7 +82,7 @@ public class ResourceResponder extends DefaultResponder {
 
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
-    // WebServer loader = uriResource.initParameter( 0, WebServer.class );
+    // WebServer loader = resource.initParameter( 0, WebServer.class );
     Config config = resource.initParameter( 1, Config.class );
 
     // Retrieve the base directory in the classpath for our search
