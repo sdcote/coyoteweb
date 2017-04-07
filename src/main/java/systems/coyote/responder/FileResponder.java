@@ -25,7 +25,7 @@ import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.DefaultResponder;
 import coyote.commons.network.http.responder.Error404Responder;
 import coyote.commons.network.http.responder.HTTPDRouter;
-import coyote.commons.network.http.responder.UriResource;
+import coyote.commons.network.http.responder.Resource;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
 
@@ -52,15 +52,15 @@ public class FileResponder extends DefaultResponder {
 
 
   @Override
-  public Response get( final UriResource uriResource, final Map<String, String> urlParams, final IHTTPSession session ) {
+  public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
     // WebServer loader = uriResource.initParameter( 0, WebServer.class );
-    Config config = uriResource.initParameter( 1, Config.class );
+    Config config = resource.initParameter( 1, Config.class );
 
     // Retrieve the base directory in the classpath for our content
     String parentdirectory = config.getString( ROOT );
     File docroot = new File( parentdirectory );
 
-    final String baseUri = uriResource.getUri();
+    final String baseUri = resource.getUri();
     String realUri = HTTPDRouter.normalizeUri( session.getUri() );
     for ( int index = 0; index < Math.min( baseUri.length(), realUri.length() ); index++ ) {
       if ( baseUri.charAt( index ) != realUri.charAt( index ) ) {
@@ -83,7 +83,7 @@ public class FileResponder extends DefaultResponder {
     // if the file does not exist or is not a file...
     if ( !requestedFile.exists() || !requestedFile.isFile() ) {
       Log.append( HTTPD.EVENT, "404 NOT FOUND - '" + realUri + "' LOCAL: " + requestedFile.getAbsolutePath() );
-      return new Error404Responder().get( uriResource, urlParams, session );
+      return new Error404Responder().get( resource, urlParams, session );
     } else {
 
       // return the found file

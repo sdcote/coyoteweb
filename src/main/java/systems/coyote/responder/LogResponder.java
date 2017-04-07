@@ -26,8 +26,8 @@ import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.auth.Auth;
+import coyote.commons.network.http.responder.Resource;
 import coyote.commons.network.http.responder.Responder;
-import coyote.commons.network.http.responder.UriResource;
 import coyote.dataframe.DataFrame;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
@@ -76,9 +76,9 @@ public class LogResponder extends AbstractJsonResponder implements Responder {
    * 
    */
   @Override
-  public Response get( UriResource uriResource, Map<String, String> urlParams, IHTTPSession session ) {
-    WebServer loader = uriResource.initParameter( 0, WebServer.class );
-    Config config = uriResource.initParameter( 1, Config.class );
+  public Response get( Resource resource, Map<String, String> urlParams, IHTTPSession session ) {
+    WebServer loader = resource.initParameter( 0, WebServer.class );
+    Config config = resource.initParameter( 1, Config.class );
     setFormattingJson( true );
 
     // Get the name of the logger from the URL parameters specified when we were registered with the router 

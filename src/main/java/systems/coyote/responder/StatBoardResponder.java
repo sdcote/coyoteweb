@@ -20,8 +20,8 @@ import coyote.commons.StringUtil;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.auth.Auth;
+import coyote.commons.network.http.responder.Resource;
 import coyote.commons.network.http.responder.Responder;
-import coyote.commons.network.http.responder.UriResource;
 import coyote.dataframe.DataFrame;
 import coyote.i13n.ArmMaster;
 import coyote.i13n.Counter;
@@ -82,9 +82,9 @@ public class StatBoardResponder extends AbstractJsonResponder implements Respond
    * 
    */
   @Override
-  public Response get( UriResource uriResource, Map<String, String> urlParams, IHTTPSession session ) {
-    WebServer loader = uriResource.initParameter( 0, WebServer.class );
-    Config config = uriResource.initParameter( 1, Config.class );
+  public Response get( Resource resource, Map<String, String> urlParams, IHTTPSession session ) {
+    WebServer loader = resource.initParameter( 0, WebServer.class );
+    Config config = resource.initParameter( 1, Config.class );
 
     // get a reference to the stats board of our loader, which should be the web server as well
     StatBoard statboard = loader.getStats();
