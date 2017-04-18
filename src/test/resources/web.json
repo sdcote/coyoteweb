@@ -38,7 +38,7 @@
 		"/(.)+" : { "Class" : "systems.coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
 	},
 	
-	"Components": [
+	"Component": [
 		{
 		}
 	],
