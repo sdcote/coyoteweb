@@ -71,6 +71,7 @@ public class StatBoardResponder extends AbstractJsonResponder implements Respond
   private static final String VM_HEAP_PCT = "HeapPercentage";
   private static final String VM_MAX_HEAP = "MaxHeapSize";
   private static final String FIXTURE_ID = "InstanceId";
+  private static final String FIXTURE_NAME = "InstanceName";
   private static final String HOSTADDR = "IpAddress";
   private static final String NAME = "Name";
   private static final String UPTIME = "Uptime";
@@ -86,9 +87,6 @@ public class StatBoardResponder extends AbstractJsonResponder implements Respond
     WebServer loader = resource.initParameter( 0, WebServer.class );
     Config config = resource.initParameter( 1, Config.class );
 
-    // get a reference to the stats board of our loader, which should be the web server as well
-    StatBoard statboard = loader.getStats();
-
     // Get the command from the URL parameters specified when we were registered with the router 
     String metric = urlParams.get( "metric" );
     String name = urlParams.get( "name" );
@@ -96,15 +94,15 @@ public class StatBoardResponder extends AbstractJsonResponder implements Respond
     // we are going to format the output 
     setFormattingJson( true );
 
-    if ( statboard != null ) {
+    if ( loader.getStats() != null ) {
       if ( StringUtil.isNotBlank( metric ) ) {
-        if ( StringUtil.isNotBlank( metric ) ) {
-
+        if ( StringUtil.isNotBlank( name ) ) {
+          // TODO: get just the named metric of that type (e.g. 'counters' with a specific name )
         } else {
-
+          // TODO: return all the metrics of type (e.g. all 'counters')
         }
       } else {
-        results.merge( createStatus( statboard ) );
+        results.merge( createStatus( loader ) );
       }
     }
 
@@ -115,12 +113,15 @@ public class StatBoardResponder extends AbstractJsonResponder implements Respond
 
 
 
-  private DataFrame createStatus( StatBoard statboard ) {
+  private DataFrame createStatus( WebServer loader ) {
+    StatBoard statboard = loader.getStats();
+
     DataFrame retval = new DataFrame();
     retval.add( NAME, STATUS );
 
     // Add information from the statboard  fixture
     retval.add( FIXTURE_ID, statboard.getId() );
+    retval.add( FIXTURE_NAME, loader.getName() );
     retval.add( OS_NAME, System.getProperty( "os.name" ) );
     retval.add( OS_ARCH, System.getProperty( "os.arch" ) );
     retval.add( OS_VERSION, System.getProperty( "os.version" ) );
