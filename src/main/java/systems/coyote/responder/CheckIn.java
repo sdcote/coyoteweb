@@ -12,7 +12,9 @@
 package systems.coyote.responder;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import coyote.commons.network.http.Body;
@@ -20,12 +22,14 @@ import coyote.commons.network.http.HTTPD;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.ResponseException;
+import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.Resource;
 import coyote.commons.network.http.responder.Responder;
+import coyote.dataframe.DataField;
 import coyote.dataframe.DataFrame;
-import coyote.loader.cfg.Config;
+import coyote.dataframe.marshal.JSONMarshaler;
+import coyote.dataframe.marshal.MarshalException;
 import coyote.loader.log.Log;
-import systems.coyote.WebServer;
 
 
 /**
@@ -42,7 +46,15 @@ import systems.coyote.WebServer;
  */
 public class CheckIn extends AbstractJsonResponder implements Responder {
 
-  public static final Map<String, DataFrame> components = new Hashtable<String, DataFrame>();
+  private static final String STATUS = "status";
+  private static final String NAME = "InstanceName";
+  private static final String ID = "InstanceId";
+  private static final String ADDRESS = "IpAddress";
+  private static final String LASTSEEN = "LastCheckIn";
+
+  public static final Map<String, DataFrame> componentsById = new Hashtable<String, DataFrame>();
+  public static final Map<String, DataFrame> componentsByName = new Hashtable<String, DataFrame>();
+  public static final Map<String, DataFrame> componentsByIP = new Hashtable<String, DataFrame>();
 
 
 
@@ -52,9 +64,6 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
    */
   @Override
   public Response get( Resource resource, Map<String, String> urlParams, IHTTPSession session ) {
-    final WebServer loader = resource.initParameter( 0, WebServer.class );
-    final Config config = resource.initParameter( 1, Config.class );
-
     // Get the command from the URL parameters specified when we were registered with the router 
     String name = urlParams.get( "name" );
     // /checkin/  - get all
@@ -72,34 +81,58 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
    * Put the given body in a map of other bodies by its ID
    * 
    * <p>As long as the body is a valid JSON and it contains a top level field 
-   * of "id" (case in-sensitive), store it.
+   * of an id, name or IP address, store it.
    * 
    * @see coyote.commons.network.http.responder.DefaultStreamResponder#put(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response put( Resource resource, Map<String, String> urlParams, IHTTPSession session ) {
-    final WebServer loader = resource.initParameter( 0, WebServer.class );
-    final Config config = resource.initParameter( 1, Config.class );
 
+    Body body = null;
     try {
-      Body body = session.parseBody();
+      body = session.parseBody();
 
-      for ( String name :body.keySet() ) {
+      for ( String name : body.keySet() ) {
         String strdata = body.getAsString( name );
-        Log.info( this.getClass().getSimpleName() + " marshaling '" + name + "' type "+body.getEntityType( name )+" body of '" + strdata.substring( 0, strdata.length() > 500 ? 500 : strdata.length() ) + ( strdata.length() <= 500 ? "'" : " ...'" ) );
+        Log.info( this.getClass().getSimpleName() + " marshaling '" + name + "' type " + body.getEntityType( name ) + " body of '" + strdata.substring( 0, strdata.length() > 500 ? 500 : strdata.length() ) + ( strdata.length() <= 500 ? "'" : " ...'" ) );
       }
     } catch ( IOException | ResponseException e ) {
       Log.append( HTTPD.EVENT, "ERROR: Could not parse body: " + e.getClass().getSimpleName() + " - " + e.getMessage() );
     }
 
-    // If there is a valid data frame in the body
+    if ( body != null ) {
+      try {
+        List<DataFrame> frames = JSONMarshaler.marshal( body.getContent() );
+        if ( frames.size() > 0 ) {
+          DataFrame frame = frames.get( 0 );
+          frame.put( LASTSEEN, new Date() );
+          DataField field = frame.getFieldIgnoreCase( NAME );
+          if ( field != null ) {
+            componentsByName.put( field.getStringValue(), frame );
+          }
+          field = frame.getFieldIgnoreCase( ID );
+          if ( field != null ) {
+            componentsById.put( field.getStringValue(), frame );
+          }
+          field = frame.getFieldIgnoreCase( ADDRESS );
+          if ( field != null ) {
+            componentsByIP.put( field.getStringValue(), frame );
+          }
+          results.set( STATUS, "success" );
+        } else {
+          setStatus( Status.BAD_REQUEST );
+          results.set( STATUS, "No objects found in request" );
+        }
+      } catch ( MarshalException e ) {
+        setStatus( Status.BAD_REQUEST );
+        results.set( STATUS, "Problems parsing body of the request: " + e.getMessage() );
+      }
+    } else {
+      setStatus( Status.BAD_REQUEST );
+      results.set( STATUS, "Problems parsing body of the request" );
+    }
 
-    // If the frame contains an ID
-
-    // Store the frame in the map by its ID
-
-    // TODO Auto-generated method stub
-    results.set( "status", "success" );
+    Log.info( "Profiles by Name:" + componentsByName.size() + " ID:" + componentsById.size() + " Address:" + componentsByIP.size() );
     return Response.createFixedLengthResponse( getStatus(), getMimeType(), getText() );
   }
 
