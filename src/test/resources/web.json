@@ -1,9 +1,9 @@
 {
 	"Class" : "systems.coyote.WebServer",
 	
-	"Port": 443,
-	"RedirectPort" : 80,
-	"SecureServer" : true,
+	"XXPort": 443,
+	"XXRedirectPort" : 80,
+	"XXSecureServer" : true,
 	"EnableARM" : true,
  	"EnableGauges" : true,
  	"EnableTiming" : true,
@@ -30,6 +30,8 @@
     	"/api/stat/:metric/:name" : { "Class" : "systems.coyote.responder.StatBoardResponder" },
 		"/api/log" : { "Class" : "systems.coyote.responder.LogResponder" },
     	"/api/log/:name" : { "Class" : "systems.coyote.responder.LogResponder" },
+		"/api/checkin" : { "Class" : "systems.coyote.responder.CheckIn" },
+    	"/api/checkin/:id" : { "Class" : "systems.coyote.responder.CheckIn" },
     	
 		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content", "Priority" : 16383 },
 		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/main/resources/content", "Priority" : 16383 },

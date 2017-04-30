@@ -43,6 +43,9 @@ import coyote.loader.log.Log;
  * components whose IP address changes can report their current IP for 
  * managers to use in locating them. It also gives basic monitoring data to 
  * managers with having them contact the component directly.
+ * 
+ * "/api/checkin" : { "Class" : "systems.coyote.responder.CheckIn" },
+ * "/api/checkin/:id" : { "Class" : "systems.coyote.responder.CheckIn" },
  */
 public class CheckIn extends AbstractJsonResponder implements Responder {
 
@@ -65,7 +68,7 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
   @Override
   public Response get( Resource resource, Map<String, String> urlParams, IHTTPSession session ) {
     // Get the command from the URL parameters specified when we were registered with the router 
-    String name = urlParams.get( "name" );
+    String name = urlParams.get( "id" );
     // /checkin/  - get all
     // /checkin/:name  - get all with this name
 
@@ -107,15 +110,15 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
           DataFrame frame = frames.get( 0 );
           frame.put( LASTSEEN, new Date() );
           DataField field = frame.getFieldIgnoreCase( NAME );
-          if ( field != null ) {
+          if ( field != null && field.isNotNull() ) {
             componentsByName.put( field.getStringValue(), frame );
           }
           field = frame.getFieldIgnoreCase( ID );
-          if ( field != null ) {
+          if ( field != null && field.isNotNull() ) {
             componentsById.put( field.getStringValue(), frame );
           }
           field = frame.getFieldIgnoreCase( ADDRESS );
-          if ( field != null ) {
+          if ( field != null && field.isNotNull() ) {
             componentsByIP.put( field.getStringValue(), frame );
           }
           results.set( STATUS, "success" );
