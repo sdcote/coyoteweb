@@ -11,16 +11,15 @@
  */
 package systems.coyote.responder;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import coyote.commons.network.MimeType;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.IStatus;
-import coyote.commons.network.http.ResponseException;
+import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.DefaultResponder;
+import coyote.commons.network.http.responder.Resource;
 import coyote.commons.network.http.responder.Responder;
 import coyote.dataframe.DataFrame;
 import coyote.dataframe.marshal.JSONMarshaler;
@@ -39,6 +38,7 @@ public abstract class AbstractJsonResponder extends DefaultResponder implements 
   protected final DataFrame results = new DataFrame();
   private boolean formattingJson = false;
   protected IStatus resultStatus = Status.OK;
+  private DataFrame METHOD_NOT_ALLOWED = new DataFrame().set( "error", "Method Not Allowed" );
 
 
 
@@ -76,27 +76,6 @@ public abstract class AbstractJsonResponder extends DefaultResponder implements 
 
 
 
-  /**
-   * Parse the body of the request into parameters and or a list of named file 
-   * chunks.
-   * 
-   * @param session the session containing the request
-   * 
-   * @return a list of file chunks, may be empty, but never null.
-   * 
-   * @throws IOException if there are problems reading the request stream
-   * @throws ResponseException if there a logical HTTP issues with the format 
-   *         or encoding of the body 
-   */
-  public Map<String, String> parseBody( final IHTTPSession session ) throws IOException, ResponseException {
-    final Map<String, String> files = new HashMap<String, String>();
-    session.parseBody( files );
-    return files;
-  }
-
-
-
-
   @Override
   public IStatus getStatus() {
     return resultStatus;
@@ -129,6 +108,46 @@ public abstract class AbstractJsonResponder extends DefaultResponder implements 
   @Override
   public String getMimeType() {
     return MimeType.JSON.getType();
+  }
+
+
+
+
+  @Override
+  public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
+
+
+
+  @Override
+  public Response delete( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
+
+
+
+  @Override
+  public Response post( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
+
+
+
+  @Override
+  public Response put( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
+
+
+
+  @Override
+  public Response other( final String method, final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
   }
 
 }
