@@ -95,9 +95,11 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
     try {
       body = session.parseBody();
 
-      for ( String name : body.keySet() ) {
-        String strdata = body.getAsString( name );
-        Log.info( this.getClass().getSimpleName() + " marshaling '" + name + "' type " + body.getEntityType( name ) + " body of '" + strdata.substring( 0, strdata.length() > 500 ? 500 : strdata.length() ) + ( strdata.length() <= 500 ? "'" : " ...'" ) );
+      if ( Log.isLogging( Log.DEBUG_EVENTS ) ) {
+        for ( String name : body.keySet() ) {
+          String strdata = body.getAsString( name );
+          Log.debug( this.getClass().getSimpleName() + " marshaling '" + name + "' type " + body.getEntityType( name ) + " body of '" + strdata.substring( 0, strdata.length() > 500 ? 500 : strdata.length() ) + ( strdata.length() <= 500 ? "'" : " ...'" ) );
+        }
       }
     } catch ( IOException | ResponseException e ) {
       Log.append( HTTPD.EVENT, "ERROR: Could not parse body: " + e.getClass().getSimpleName() + " - " + e.getMessage() );
@@ -135,7 +137,7 @@ public class CheckIn extends AbstractJsonResponder implements Responder {
       results.set( STATUS, "Problems parsing body of the request" );
     }
 
-    Log.info( "Profiles by Name:" + componentsByName.size() + " ID:" + componentsById.size() + " Address:" + componentsByIP.size() );
+    Log.debug( "Profiles by Name:" + componentsByName.size() + " ID:" + componentsById.size() + " Address:" + componentsByIP.size() );
     return Response.createFixedLengthResponse( getStatus(), getMimeType(), getText() );
   }
 
