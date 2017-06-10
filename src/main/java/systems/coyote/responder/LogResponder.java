@@ -20,6 +20,7 @@ import java.util.Map;
 
 import coyote.commons.StringUtil;
 import coyote.commons.UriUtil;
+import coyote.commons.WebServer;
 import coyote.commons.network.MimeType;
 import coyote.commons.network.http.HTTPD;
 import coyote.commons.network.http.IHTTPSession;
@@ -33,7 +34,6 @@ import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
 import coyote.loader.log.LogTool;
 import coyote.loader.log.Logger;
-import systems.coyote.WebServer;
 
 
 /**

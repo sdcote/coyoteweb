@@ -17,6 +17,7 @@ import java.util.Map;
 
 import coyote.commons.DateUtil;
 import coyote.commons.StringUtil;
+import coyote.commons.WebServer;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.auth.Auth;
@@ -31,7 +32,6 @@ import coyote.i13n.State;
 import coyote.i13n.TimingMaster;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
-import systems.coyote.WebServer;
 
 
 /**
