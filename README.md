@@ -2,11 +2,12 @@
 Small, embeddable web server using the Loader toolkit.
 
 # Goals
-This is an example of implementing a lightweight web application using the Coyote 
-Loader toolkit. It is intended to be a use case project to further explore the 
-features, capabilities and gaps in the Coyote Loader project. In going through a few 
-practical use cases, it is expected that the features of the Coyote Loader project 
-can be tested, refined and updated to provide the intended capabilities.
+This is an example of implementing a lightweight web application using the [Coyote 
+Loader](https://github.com/sdcote/loader) toolkit. It is intended to be a use case 
+project to further explore the features, capabilities and gaps in the Coyote Loader 
+project. In going through a few practical use cases, it is expected that the 
+features of the Coyote Loader project can be tested, refined and updated to provide 
+the intended capabilities.
 
 The primary use case is standing up a HTTP server in Heroku to serve static content 
 with some dynamic processing. This is a common front-end implementation for a 12-
@@ -34,7 +35,7 @@ Just like any `Loader`, the web server is controlled by a JSON configuration fil
 This file controls what components are loaded. Further, it support the mapping of 
 request paths to `Responder` components. This means you can write any class you 
 want to service the HTTP request for that URL path. Several are included to handle 
-basic requests and to show-off some of the features of the Loader toolkit.
+basic requests and to show-off some of the features of the Loader toolkit.[
 
 # Quickstart
 All that is required to spin up a web server is:
@@ -46,4 +47,4 @@ the server. Examples can be found in the test directories.
 
 Although the server can be called programmatically, it may be better to use the HTTPD
 server in the Coyote Loader project as WebServer is designed to be a Loader which 
-contains the HTTPD server and may add more overhead than you might want.
+contains the HTTPD server and may add more overhead than you might want.  
