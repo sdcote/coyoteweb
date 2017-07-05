@@ -34,7 +34,7 @@ repositories {
 
 
 ext {
-	loaderVersion = '1.1'
+	loaderVersion = '0.7.1'
 	junitVersion = '4.11'
 }
 dependencies {
