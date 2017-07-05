@@ -38,7 +38,7 @@ public abstract class AbstractJsonResponder extends DefaultResponder implements 
   protected final DataFrame results = new DataFrame();
   private boolean formattingJson = false;
   protected IStatus resultStatus = Status.OK;
-  private DataFrame METHOD_NOT_ALLOWED = new DataFrame().set( "error", "Method Not Allowed" );
+  protected DataFrame METHOD_NOT_ALLOWED = new DataFrame().set( "error", "Method Not Allowed" );
 
 
 
