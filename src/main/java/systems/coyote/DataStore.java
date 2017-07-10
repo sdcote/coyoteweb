@@ -13,6 +13,7 @@ package systems.coyote;
 
 import javax.sql.DataSource;
 
+import coyote.commons.jdbc.CoyoteDataSource;
 import coyote.loader.ConfigTag;
 import systems.coyote.datastore.AbstractStore;
 import systems.coyote.datastore.EntityStore;
@@ -63,6 +64,11 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
   @Override
   public void initialize() {
     super.initialize();
+
+    CoyoteDataSource ds = new CoyoteDataSource();
+    ds.setConfiguration( getConfiguration() );
+    datasource = ds;
+
     getContext().set( getName(), this );
   }
 

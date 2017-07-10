@@ -13,7 +13,12 @@ package coyote.commons.jdbc;
 
 import java.io.Closeable;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,7 +26,11 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import coyote.commons.CipherUtil;
+import coyote.commons.ExceptionUtil;
 import coyote.commons.jdbc.pool.ConnectionPool;
+import coyote.dataframe.DataFrameException;
+import coyote.loader.Loader;
 import coyote.loader.cfg.Config;
 import coyote.loader.log.Log;
 
@@ -31,10 +40,27 @@ import coyote.loader.log.Log;
  */
 public class CoyoteDataSource implements DataSource, Closeable {
 
+  // Configuration tags
   private static final String NAME = "Name";
+  private static final String LIBRARY = "Library";
+  private static final String USERNAME = "Username";
+  private static final String PASSWORD = "Password";
+  private static final String TARGET = "Target";
+  private static final String DRIVER = "Driver";
+  private static final String AUTO_CREATE = "AutoCreate";
+
   private final Config configuration = new Config();
   private final AtomicBoolean isClosed = new AtomicBoolean();
   private volatile ConnectionPool pool = null;
+
+  private Driver driver = null;
+
+
+
+
+  public void setConfiguration( Config cfg ) {
+    configuration.merge( cfg );
+  }
 
 
 
@@ -206,6 +232,126 @@ public class CoyoteDataSource implements DataSource, Closeable {
   @Override
   public String toString() {
     return getName();
+  }
+
+
+
+
+  /**
+   * Create a connection to the database.
+   * 
+   * <p>Caller is responsible for closing the connection when done with it.
+   * 
+   * @return the connection to the database or null if there were problems
+   */
+  private Connection createConnection() {
+    Connection retval = null;
+    try {
+      if ( driver == null ) {
+        String url = getLibrary();
+        URL u = new URL( url );
+        URLClassLoader ucl = new URLClassLoader( new URL[] { u } );
+        driver = (Driver)Class.forName( getDriver(), true, ucl ).newInstance();
+        DriverManager.registerDriver( new DriverDelegate( driver ) );
+      }
+      retval = DriverManager.getConnection( getTarget(), getUsername(), getPassword() );
+    } catch ( InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException | MalformedURLException e ) {
+      Log.error( "Could not connect to database: " + e.getClass().getSimpleName() + " - " + e.getMessage() );
+      Log.debug( "ERROR: Could not connect to database: " + e.getClass().getSimpleName() + " - " + e.getMessage() + "\n" + ExceptionUtil.stackTrace( e ) );
+    }
+    return retval;
+  }
+
+
+
+
+  /**
+   * @param value
+   */
+  public void setAutoCreate( boolean value ) {
+    configuration.put( AUTO_CREATE, value );
+  }
+
+
+
+
+  public boolean isAutoCreate() {
+    try {
+      return configuration.getAsBoolean( AUTO_CREATE );
+    } catch ( DataFrameException ignore ) {}
+    return false;
+  }
+
+
+
+
+  public String getDriver() {
+    return configuration.getString( DRIVER );
+  }
+
+
+
+
+  /**
+   * @return the target URI to which the writer will write
+   */
+  public String getTarget() {
+    return configuration.getString( TARGET );
+  }
+
+
+
+
+  /**
+   * Set the URI to where the connection should be made.
+   * 
+   * @param value the URI to where the writer should write its data
+   */
+  public void setTarget( final String value ) {
+    configuration.put( TARGET, value );
+  }
+
+
+
+
+  public String getPassword() {
+    if ( configuration.containsIgnoreCase( PASSWORD ) ) {
+      return configuration.getAsString( PASSWORD );
+    } else if ( configuration.containsIgnoreCase( Loader.ENCRYPT_PREFIX + PASSWORD ) ) {
+      return CipherUtil.decryptString( configuration.getAsString( Loader.ENCRYPT_PREFIX + PASSWORD ) );
+    } else {
+      return null;
+    }
+  }
+
+
+
+
+  public String getUsername() {
+    if ( configuration.containsIgnoreCase( USERNAME ) ) {
+      return configuration.getFieldIgnoreCase( USERNAME ).getStringValue();
+    } else if ( configuration.containsIgnoreCase( Loader.ENCRYPT_PREFIX + USERNAME ) ) {
+      return CipherUtil.decryptString( configuration.getFieldIgnoreCase( Loader.ENCRYPT_PREFIX + USERNAME ).getStringValue() );
+    } else {
+      return null;
+    }
+  }
+
+
+
+
+  /**
+   * @param value
+   */
+  public void setUsername( String value ) {
+    configuration.put( USERNAME, value );
+  }
+
+
+
+
+  public String getLibrary() {
+    return configuration.getString( LIBRARY );
   }
 
 }
