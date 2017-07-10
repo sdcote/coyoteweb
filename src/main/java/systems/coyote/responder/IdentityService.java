@@ -14,12 +14,12 @@ package systems.coyote.responder;
 /**
  * 
  */
-public class Identity extends AbstractJsonResponder {
+public class IdentityService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public Identity() {
+  public IdentityService() {
     // TODO Auto-generated constructor stub
   }
 

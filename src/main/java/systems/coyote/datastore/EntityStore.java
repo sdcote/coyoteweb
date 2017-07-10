@@ -12,7 +12,7 @@
 package systems.coyote.datastore;
 
 /**
- * An entity is some identified acte\or in the system.
+ * An entity is some identified actor in the system.
  * 
  * <p>Entities can be a person, thing or group which somehow interacts with 
  * each other. Entities are physical things like people and companies.

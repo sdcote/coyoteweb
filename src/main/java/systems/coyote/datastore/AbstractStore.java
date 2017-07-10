@@ -11,13 +11,26 @@
  */
 package systems.coyote.datastore;
 
-import systems.coyote.domain.Identity;
+import coyote.loader.component.AbstractManagedComponent;
 
 /**
  * 
  */
-public interface IdentityStore {
-  
-  public Identity getIdentity(String sysid);
+public abstract class AbstractStore extends AbstractManagedComponent {
 
+  
+
+  /**
+   * Keeps the connection fresh, replacing it if necessary
+   * 
+   * @see coyote.loader.thread.ThreadJob#doWork()
+   */
+  @Override
+  public void doWork() {
+    synchronized( mutex ) {
+      super.doWork();
+    }
+  }
+  
+  
 }

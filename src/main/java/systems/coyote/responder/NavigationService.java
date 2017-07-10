@@ -22,12 +22,12 @@ import coyote.commons.network.http.responder.Resource;
 /**
  *
  */
-public class Entity extends AbstractJsonResponder {
+public class NavigationService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public Entity() {
+  public NavigationService() {
     // TODO Auto-generated constructor stub
   }
 

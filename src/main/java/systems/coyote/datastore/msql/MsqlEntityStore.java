@@ -11,7 +11,7 @@
  */
 package systems.coyote.datastore.msql;
 
-import coyote.loader.component.AbstractManagedComponent;
+import systems.coyote.datastore.AbstractStore;
 import systems.coyote.datastore.EntityStore;
 
 
@@ -25,22 +25,7 @@ import systems.coyote.datastore.EntityStore;
  * 
  * <p>It is thread safe, synchronized on the instance of this component.
  */
-public class MsqlEntityStore extends AbstractManagedComponent implements EntityStore {
-
-  /**
-   * Keeps the connection fresh, replacing it if necessary
-   * 
-   * @see coyote.loader.thread.ThreadJob#doWork()
-   */
-  @Override
-  public void doWork() {
-    synchronized( mutex ) {
-      super.doWork();
-    }
-  }
-
-
-
+public class MsqlEntityStore extends AbstractStore implements EntityStore {
 
   /**
    * 

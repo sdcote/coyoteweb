@@ -13,30 +13,21 @@ package systems.coyote.responder;
 
 import java.util.Map;
 
-import coyote.commons.WebServer;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.Resource;
-import coyote.loader.cfg.Config;
 
 
 /**
- * Return a session identifer based on the credentials provided.
- * 
- * <p>The provided data are expected to be only the name-value pairs of 
- * credentials. Normally these are username and password
- * 
- * <p>This is a complete separation of logic from presentation. Any component 
- * can make a call to this server and obtain a session identifier based on the 
- * credentials presented.
+ *
  */
-public class AuthN extends AbstractJsonResponder {
+public class GroupService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public AuthN() {
+  public GroupService() {
     // TODO Auto-generated constructor stub
   }
 
@@ -44,16 +35,33 @@ public class AuthN extends AbstractJsonResponder {
 
 
   /**
-   * Return a session identifier based on the contents of the request.
-   * 
    * @see systems.coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
-    WebServer loader = resource.initParameter( 0, WebServer.class );
-    Config config = resource.initParameter( 1, Config.class );
-
     return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
   }
-  
+
+
+
+
+  /**
+   * @see systems.coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   */
+  @Override
+  public Response delete( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
+
+
+
+  /**
+   * @see systems.coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   */
+  @Override
+  public Response post( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
+  }
+
 }

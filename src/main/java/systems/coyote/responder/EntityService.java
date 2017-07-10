@@ -13,21 +13,24 @@ package systems.coyote.responder;
 
 import java.util.Map;
 
+import coyote.commons.WebServer;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.Resource;
+import coyote.loader.cfg.Config;
+import systems.coyote.datastore.EntityStore;
 
 
 /**
  *
  */
-public class Navigation extends AbstractJsonResponder {
+public class EntityService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public Navigation() {
+  public EntityService() {
     // TODO Auto-generated constructor stub
   }
 
@@ -39,6 +42,20 @@ public class Navigation extends AbstractJsonResponder {
    */
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
+    WebServer loader = resource.initParameter( 0, WebServer.class );
+    Config config = resource.initParameter( 1, Config.class );
+
+    // the name to which our datasource is mapped in the context
+    String datasource = config.getString( "DataSource" );
+    
+    EntityStore store = (EntityStore)loader.getContext().get( datasource );
+    
+    
+    // Get the command from the URL parameters specified when we were registered with the router 
+    String key = urlParams.get( "key" );
+    
+    
+    
     return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
   }
 
