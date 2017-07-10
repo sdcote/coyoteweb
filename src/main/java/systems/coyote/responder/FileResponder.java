@@ -34,7 +34,9 @@ import coyote.loader.log.Log;
  * Generic handler to retrieve the requested page from a file root of a file 
  * system.
  * 
- * <p>This allows for serving from the file system like a regular web server.
+ * <p>This allows for serving from the file system like a regular web server. 
+ * Contrast this with the ResourceResponder which serves content from the 
+ * classpath.
  */
 public class FileResponder extends DefaultResponder {
 

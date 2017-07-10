@@ -20,7 +20,15 @@ import coyote.commons.network.http.responder.Resource;
 
 
 /**
+ * Sessions store data for an identity while using the system.
+ *
+ * <p>Sessions are nothing more than an identified DataFrame in the system. It 
+ * may contain any data structure need by the application.
  * 
+ * <p>The data store behind the entity only need know of an ID and the data 
+ * frame. Some may store it as a JSON string, other use a document data model 
+ * common in NoSQL databases. Relational databases use a variety of strategies 
+ * to support the data frame.
  */
 public class Session extends AbstractJsonResponder {
 

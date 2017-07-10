@@ -1,0 +1,29 @@
+{
+	"Class" : "coyote.commons.WebServer",
+	
+	"Mappings" : {
+		"/api/entity" : { "Class" : "systems.coyote.responder.Entity", "StoreName":"Entity" },
+		"/api/identity" : { "Class" : "systems.coyote.responder.Identity", "StoreName":"Identity" },
+		"/api/group" : { "Class" : "systems.coyote.responder.Group", "StoreName":"Group" },
+		"/api/menu" : { "Class" : "systems.coyote.responder.Navigation", "StoreName":"Navigation" },
+		"/api/session" : { "Class" : "systems.coyote.responder.Session", "StoreName":"Session" },
+	
+		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
+		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 }
+	},
+	
+	"Component": [
+		{"Class": "systems.coyote.datastore.msql.MsqlEntityStore", "ContextName":"Entity"},
+		{"Class": "systems.coyote.datastore.msql.MsqlIdentityStore", "ContextName":"Identity"},
+		{"Class": "systems.coyote.datastore.msql.MsqlGroupStore", "ContextName":"Group"},
+		{"Class": "systems.coyote.datastore.msql.MsqlNavigationStore", "ContextName":"Navigation"},
+		{"Class": "systems.coyote.datastore.msql.MsqlSessionStore", "ContextName":"Session"}
+	],
+		
+	"Logging": {
+		"ConsoleAppender": { "name": "default", "target": "STDOUT", "categories": "info, error, fatal, warn" },
+		"CyclingFileAppender": { "name": "debug", "target": "debug.log", "categories": "trace, debug, info, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
+		"CyclingFileAppender": { "name": "http", "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
+	}
+
+}

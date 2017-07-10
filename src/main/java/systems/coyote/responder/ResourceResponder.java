@@ -31,6 +31,10 @@ import coyote.loader.log.Log;
  * 
  * addRoute( "/(.)+", ResourceHandler.class, "content" );
  * 
+ * <p>RedirectOnIndexedDir - true will send a 301 to the browser to request 
+ * the proper URL (it will appear in the address bar) false will silently send 
+ * the index file.
+ * 
  */
 public class ResourceResponder extends DefaultResponder {
   // The configuration parameter containing the root of the content

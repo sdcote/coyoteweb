@@ -5,6 +5,7 @@
 		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"./", "Priority" : 16383 },
 		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"./", "Priority" : 16383 }
 	},
+
 	
 		
 	"Logging": {
