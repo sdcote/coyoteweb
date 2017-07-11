@@ -66,7 +66,7 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
     super.initialize();
 
     CoyoteDataSource ds = new CoyoteDataSource();
-    ds.setConfiguration( getConfiguration() );
+    //ds.setConfiguration( getConfiguration() );
     datasource = ds;
 
     getContext().set( getName(), this );

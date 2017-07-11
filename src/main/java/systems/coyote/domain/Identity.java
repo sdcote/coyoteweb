@@ -44,7 +44,7 @@ public class Identity extends DomainObject<Identity> {
 
 
   /**
-   * @see coyote.rtw.domain.DomainObject#getThis()
+   * @see systems.coyote.domain.DomainObject#getThis()
    */
   @Override
   protected Identity getThis() {

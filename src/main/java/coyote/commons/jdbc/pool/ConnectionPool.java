@@ -29,6 +29,8 @@ public class ConnectionPool extends AbstractConnectionPool {
 
 
   public Connection getConnection() {
+    
+    // TODO need to return a wrapper around a the provided connections so we have the ability to intercept calls to close
     return null;
   }
 
@@ -48,9 +50,24 @@ public class ConnectionPool extends AbstractConnectionPool {
     // wait a short time
     
     // perform a hard shutdown
-    
-    
+        
 
+  }
+
+
+
+
+  public Object getTotalConnections() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+
+
+
+  public Object getIdleConnections() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
