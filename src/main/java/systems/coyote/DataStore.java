@@ -31,13 +31,13 @@ import systems.coyote.domain.Identity;
  * implements all domain object DataStores and uses the configured database to 
  * determine what database dialect to use.
  * 
- * <p>This uses a connection pool to manage connections for other components in 
- * the runtime.
+ * <p>This does not use a connection pool to manage connections as it shares 
+ * the connection with all components in the runtime. This should be fine as 
+ * the instance is expected to be lightweight with other instances spun-up if 
+ * load requires more throughput.
  */
 public class DataStore extends AbstractStore implements EntityStore, IdentityStore, GroupStore, SessionStore, NavigationStore {
 
-  // handles database connections 
-  DataSource datasource = null;
 
 
 
@@ -45,15 +45,6 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
   public DataStore() {}
 
 
-
-
-  /**
-   * @see coyote.loader.component.AbstractManagedComponent#getName()
-   */
-  @Override
-  public String getName() {
-    return configuration.getString( ConfigTag.NAME );
-  }
 
 
 
@@ -65,23 +56,9 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
   public void initialize() {
     super.initialize();
 
-    CoyoteDataSource ds = new CoyoteDataSource();
-    //ds.setConfiguration( getConfiguration() );
-    datasource = ds;
-
     getContext().set( getName(), this );
   }
 
-
-
-
-  /**
-   * @see coyote.loader.thread.ThreadJob#terminate()
-   */
-  @Override
-  public void terminate() {
-    super.terminate();
-  }
 
 
 
