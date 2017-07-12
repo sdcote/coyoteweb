@@ -11,10 +11,6 @@
  */
 package systems.coyote;
 
-import javax.sql.DataSource;
-
-import coyote.commons.jdbc.CoyoteDataSource;
-import coyote.loader.ConfigTag;
 import systems.coyote.datastore.AbstractStore;
 import systems.coyote.datastore.EntityStore;
 import systems.coyote.datastore.GroupStore;
@@ -38,13 +34,7 @@ import systems.coyote.domain.Identity;
  */
 public class DataStore extends AbstractStore implements EntityStore, IdentityStore, GroupStore, SessionStore, NavigationStore {
 
-
-
-
-
   public DataStore() {}
-
-
 
 
 
@@ -58,7 +48,6 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
 
     getContext().set( getName(), this );
   }
-
 
 
 
