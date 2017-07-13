@@ -46,7 +46,6 @@ public abstract class AbstractStore extends AbstractManagedComponent implements 
   private static final String TARGET = "Target";
   private static final String PASSWORD = "Password";
   private static final String USERNAME = "Username";
-  private static final String NAME = "Name";
   private static final String LIBRARY = "Library";
 
   private final List<Connection> connections = new ArrayList<Connection>();
