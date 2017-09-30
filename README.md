@@ -35,12 +35,16 @@ Just like any `Loader`, the web server is controlled by a JSON configuration fil
 This file controls what components are loaded. Further, it support the mapping of 
 request paths to `Responder` components. This means you can write any class you 
 want to service the HTTP request for that URL path. Several are included to handle 
-basic requests and to show-off some of the features of the Loader toolkit.[
+basic requests and to show-off some of the features of the Loader toolkit.
+
+There is a `FileServer` loader which extends the `WebServer` which is desigened 
+to provide a simple HTTP server with minimal configuration. See the test 
+configuration files for examples of minimal configurations. 
 
 # Quickstart
 All that is required to spin up a web server is:
 
-    java -jar CoyoteWeb-X.X.jar config.json
+    java -jar CoyoteWeb-X.X.X.jar config.json
 
 The `config.json` is a JSON formatted file which contains the configuration for 
 the server. Examples can be found in the test directories.
