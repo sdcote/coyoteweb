@@ -48,9 +48,9 @@ import coyote.loader.log.Log;
  */
 public class FileResponder extends DefaultResponder {
 
-  private static final String ROOT = "Root";
+  public static final String ROOT_TAG = "Root";
   private static final String DEFAULT_ROOT = "content";
-  private static final String LIST_FILES_TAG = "listFiles";
+  public static final String LIST_FILES_TAG = "listFiles";
 
   public static final List<String> INDEX_FILE_NAMES = new ArrayList<String>() {
     {
@@ -75,7 +75,7 @@ public class FileResponder extends DefaultResponder {
     Config config = resource.initParameter(1, Config.class);
 
     // Retrieve the base directory from which to serve files
-    String root = config.getString(ROOT);
+    String root = config.getString(ROOT_TAG);
     File docroot = new File(root);
 
     // Determine the real URI into our content

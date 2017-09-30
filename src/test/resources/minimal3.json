@@ -1,0 +1,5 @@
+{
+	"Class": "coyote.commons.FileServer",
+	"root": "src/dev",
+	"listFiles": false
+}
