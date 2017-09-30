@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.domain;
+package coyote.domain;
 
 import coyote.dataframe.DataFrame;
 
@@ -44,7 +44,7 @@ public class Identity extends DomainObject<Identity> {
 
 
   /**
-   * @see systems.coyote.domain.DomainObject#getThis()
+   * @see coyote.domain.DomainObject#getThis()
    */
   @Override
   protected Identity getThis() {

@@ -9,15 +9,15 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote;
+package coyote;
 
-import systems.coyote.datastore.AbstractStore;
-import systems.coyote.datastore.EntityStore;
-import systems.coyote.datastore.GroupStore;
-import systems.coyote.datastore.IdentityStore;
-import systems.coyote.datastore.NavigationStore;
-import systems.coyote.datastore.SessionStore;
-import systems.coyote.domain.Identity;
+import coyote.datastore.AbstractStore;
+import coyote.datastore.EntityStore;
+import coyote.datastore.GroupStore;
+import coyote.datastore.IdentityStore;
+import coyote.datastore.NavigationStore;
+import coyote.datastore.SessionStore;
+import coyote.domain.Identity;
 
 
 /**
@@ -53,7 +53,7 @@ public class DataStore extends AbstractStore implements EntityStore, IdentitySto
 
 
   /**
-   * @see systems.coyote.datastore.IdentityStore#getIdentity(java.lang.String)
+   * @see coyote.datastore.IdentityStore#getIdentity(java.lang.String)
    */
   @Override
   public Identity getIdentity( String sysid ) {

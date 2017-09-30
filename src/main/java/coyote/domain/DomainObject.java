@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.domain;
+package coyote.domain;
 
 import coyote.dataframe.DataFrame;
 

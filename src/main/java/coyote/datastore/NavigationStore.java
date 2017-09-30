@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.datastore;
+package coyote.datastore;
 
 /**
  * Navidations are links to things grouped by logical names, contexts and 

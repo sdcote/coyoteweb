@@ -9,11 +9,18 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.datastore;
+package coyote.responder;
 
 /**
- * Groups are synonymous with roles and are logical collections of identities. 
+ * 
  */
-public interface GroupStore {
+public class IdentityService extends AbstractJsonResponder {
+
+  /**
+   * 
+   */
+  public IdentityService() {
+    // TODO Auto-generated constructor stub
+  }
 
 }

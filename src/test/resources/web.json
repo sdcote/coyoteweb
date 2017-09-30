@@ -1,0 +1,55 @@
+{
+	"Class" : "coyote.commons.WebServer",
+	
+	"XXPort": 443,
+	"XXRedirectPort" : 80,
+	"XXSecureServer" : true,
+	"EnableARM" : true,
+ 	"EnableGauges" : true,
+ 	"EnableTiming" : true,
+	
+	"Auth": {
+		"SendAuthRequestOnFailure": true,
+		"AllowUnsecuredConnections":false,
+		"Users":[ 
+			{ "EncryptedName" : "v2UeWqKIv6ph2u35/7iI4joYLUE4U6iH", 
+			  "EncryptedPassword" : "6ntFRYIIv7wyh75cRgqlNzgAdPz/K2mz", 
+			  "EncryptedGroups" : "0HR3uyUplj+VLJTNJTyyUh1VuD36N6nJ0gAADuFsHVENVTBmspLMs0gkTdMFuOYF"
+			}
+		]
+	},
+	
+	"IPACL" : {
+		"default" : "deny",
+		"127.0.0.1" : "allow"
+	},
+		
+	"Mappings" : {
+		"/api/stat" : { "Class" : "coyote.responder.StatBoardResponder" },
+    	"/api/stat/:metric" : { "Class" : "coyote.responder.StatBoardResponder" },
+    	"/api/stat/:metric/:name" : { "Class" : "coyote.responder.StatBoardResponder" },
+		"/api/log" : { "Class" : "coyote.responder.LogResponder" },
+    	"/api/log/:name" : { "Class" : "coyote.responder.LogResponder" },
+		"/api/checkin" : { "Class" : "coyote.responder.CheckIn" },
+    	"/api/checkin/:id" : { "Class" : "coyote.responder.CheckIn" },
+    	
+		"/" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
+		"/(.)+" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
+		
+		"/" : { "Class" : "coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  },
+		"/(.)+" : { "Class" : "coyote.responder.ResourceResponder", "root":"content", "RedirectOnIndexedDir":true, "Priority" : 32767  }
+	},
+	
+	"Component": [
+		{
+		}
+	],
+	
+		
+	"Logging": {
+		"StandardOutput": {"categories": "info, error, fatal, warn" },
+		"CyclingFileAppender": { "name": "debug", "target": "debug.log", "categories": "trace, debug, info, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
+		"CyclingFileAppender": { "name": "http", "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
+	}
+
+}

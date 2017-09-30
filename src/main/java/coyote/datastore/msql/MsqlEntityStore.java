@@ -9,10 +9,10 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.datastore.msql;
+package coyote.datastore.msql;
 
-import systems.coyote.datastore.AbstractStore;
-import systems.coyote.datastore.EntityStore;
+import coyote.datastore.AbstractStore;
+import coyote.datastore.EntityStore;
 
 
 /**

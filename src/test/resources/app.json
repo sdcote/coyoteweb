@@ -2,20 +2,20 @@
 	"Class" : "coyote.commons.WebServer",
 	
 	"Mappings" : {
-		"/api/entity:key" : { "Class" : "systems.coyote.responder.EntityService", "DataStore":"Default" },
-		"/api/identity:key" : { "Class" : "systems.coyote.responder.IdentityService", "DataStore":"Default" },
-		"/api/group:key" : { "Class" : "systems.coyote.responder.GroupService", "DataStore":"Default" },
-		"/api/menu:key" : { "Class" : "systems.coyote.responder.NavigationService", "DataStore":"Default" },
-		"/api/session" : { "Class" : "systems.coyote.responder.SessionService", "DataStore":"Default" },
-		"/api/session:key" : { "Class" : "systems.coyote.responder.SessionService", "DataStore":"Default" },
+		"/api/entity:key" : { "Class" : "coyote.responder.EntityService", "DataStore":"Default" },
+		"/api/identity:key" : { "Class" : "coyote.responder.IdentityService", "DataStore":"Default" },
+		"/api/group:key" : { "Class" : "coyote.responder.GroupService", "DataStore":"Default" },
+		"/api/menu:key" : { "Class" : "coyote.responder.NavigationService", "DataStore":"Default" },
+		"/api/session" : { "Class" : "coyote.responder.SessionService", "DataStore":"Default" },
+		"/api/session:key" : { "Class" : "coyote.responder.SessionService", "DataStore":"Default" },
 	
-		"/" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
-		"/(.)+" : { "Class" : "systems.coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 }
+		"/" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
+		"/(.)+" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 }
 	},
 	
 	"Component": [
 		{
-			"Class": "systems.coyote.DataStore", 
+			"Class": "coyote.DataStore", 
 			"Name":"Default",
 			"Target":"jdbc:sqlserver://coyote.database.windows.net:1433;database=coyotedx",
 			"Library":"jar:file:lib/sqljdbc42.jar!/",

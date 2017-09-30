@@ -1,4 +1,4 @@
-package systems.coyote.responder;
+package coyote.responder;
 
 import java.net.URL;
 import java.util.Map;

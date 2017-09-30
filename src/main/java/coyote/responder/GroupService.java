@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.responder;
+package coyote.responder;
 
 import java.util.Map;
 
@@ -22,12 +22,12 @@ import coyote.commons.network.http.responder.Resource;
 /**
  *
  */
-public class NavigationService extends AbstractJsonResponder {
+public class GroupService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public NavigationService() {
+  public GroupService() {
     // TODO Auto-generated constructor stub
   }
 
@@ -35,7 +35,7 @@ public class NavigationService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -46,7 +46,7 @@ public class NavigationService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response delete( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -57,7 +57,7 @@ public class NavigationService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response post( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {

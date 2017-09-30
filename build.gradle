@@ -6,7 +6,7 @@ apply plugin: 'idea'
 
 defaultTasks 'clean', 'build', 'publish'
 group = 'coyote'
-version = '0.1'
+version = '0.0.3'
 
 ext {
 	title = 'Coyote Web Server'
@@ -28,14 +28,15 @@ jar {
 }
 
 repositories {
+	maven { url "https://dl.bintray.com/sdcote/maven" }
 	mavenLocal()
 	mavenCentral()
 }
 
 
 ext {
-	loaderVersion = '0.7.1'
-	junitVersion = '4.11'
+	loaderVersion = '0.7.2'
+	junitVersion = '4.12'
 }
 dependencies {
 	compile "coyote:Loader:$loaderVersion"
@@ -44,7 +45,6 @@ dependencies {
 
 
 
-// custom tasks for creating source/javadoc jars
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
@@ -85,5 +85,5 @@ publishing {
 
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.14'
+	gradleVersion = '4.2'
 }

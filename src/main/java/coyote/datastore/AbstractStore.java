@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.datastore;
+package coyote.datastore;
 
 import java.io.Closeable;
 import java.io.IOException;

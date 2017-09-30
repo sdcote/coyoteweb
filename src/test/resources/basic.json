@@ -1,0 +1,15 @@
+{
+	"Class" : "coyote.commons.WebServer",
+
+	"Mappings" : {
+		"/" : { "Class" : "coyote.responder.FileResponder", "root":"./", "ListFiles":true, "Priority" : 16383 },
+		"/(.)+" : { "Class" : "coyote.responder.FileResponder", "root":"./", "ListFiles":true, "Priority" : 16383 }
+	},
+
+	
+		
+	"Logging": {
+		"StandardOutput": {"categories": "httpd, info, error, fatal, warn" }
+	}
+
+}

@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.responder;
+package coyote.responder;
 
 import java.io.IOException;
 import java.util.Date;
@@ -74,7 +74,7 @@ public class SessionService extends AbstractJsonResponder {
   /**
    * Create a new session using the given credentials.
    * 
-   * @see systems.coyote.responder.AbstractJsonResponder#put(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#put(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response put( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -125,7 +125,7 @@ public class SessionService extends AbstractJsonResponder {
   /**
    * Get the session object.
    * 
-   * @see systems.coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -137,7 +137,7 @@ public class SessionService extends AbstractJsonResponder {
 
   /**
    * Delete the session (e.g. log-out)
-   * @see systems.coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response delete( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -150,7 +150,7 @@ public class SessionService extends AbstractJsonResponder {
   /**
    * Modify the session by placing data in it.
    * 
-   * @see systems.coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response post( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {

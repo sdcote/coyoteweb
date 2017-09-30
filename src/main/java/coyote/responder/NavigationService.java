@@ -9,28 +9,25 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.responder;
+package coyote.responder;
 
 import java.util.Map;
 
-import coyote.commons.WebServer;
 import coyote.commons.network.http.IHTTPSession;
 import coyote.commons.network.http.Response;
 import coyote.commons.network.http.Status;
 import coyote.commons.network.http.responder.Resource;
-import coyote.loader.cfg.Config;
-import systems.coyote.datastore.EntityStore;
 
 
 /**
  *
  */
-public class EntityService extends AbstractJsonResponder {
+public class NavigationService extends AbstractJsonResponder {
 
   /**
    * 
    */
-  public EntityService() {
+  public NavigationService() {
     // TODO Auto-generated constructor stub
   }
 
@@ -38,24 +35,10 @@ public class EntityService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#get(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response get( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
-    WebServer loader = resource.initParameter( 0, WebServer.class );
-    Config config = resource.initParameter( 1, Config.class );
-
-    // the name to which our datasource is mapped in the context
-    String datasource = config.getString( "DataSource" );
-    
-    EntityStore store = (EntityStore)loader.getContext().get( datasource );
-    
-    
-    // Get the command from the URL parameters specified when we were registered with the router 
-    String key = urlParams.get( "key" );
-    
-    
-    
     return Response.createFixedLengthResponse( Status.METHOD_NOT_ALLOWED, getMimeType(), METHOD_NOT_ALLOWED.toString() );
   }
 
@@ -63,7 +46,7 @@ public class EntityService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#delete(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response delete( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {
@@ -74,7 +57,7 @@ public class EntityService extends AbstractJsonResponder {
 
 
   /**
-   * @see systems.coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
+   * @see coyote.responder.AbstractJsonResponder#post(coyote.commons.network.http.responder.Resource, java.util.Map, coyote.commons.network.http.IHTTPSession)
    */
   @Override
   public Response post( final Resource resource, final Map<String, String> urlParams, final IHTTPSession session ) {

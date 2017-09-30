@@ -9,7 +9,7 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.responder;
+package coyote.responder;
 
 import java.io.File;
 import java.io.FileInputStream;

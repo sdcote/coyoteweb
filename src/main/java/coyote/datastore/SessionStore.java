@@ -9,15 +9,11 @@
  *   Stephan D. Cote 
  *      - Initial concept and implementation
  */
-package systems.coyote.datastore;
-
-import systems.coyote.domain.Identity;
+package coyote.datastore;
 
 /**
  * 
  */
-public interface IdentityStore {
-  
-  public Identity getIdentity(String sysid);
+public interface SessionStore {
 
 }
