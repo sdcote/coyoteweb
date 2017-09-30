@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/sdcote/coyoteweb.svg?branch=master)](https://travis-ci.org/sdcote/coyoteweb)
 [![codecov](https://codecov.io/gh/sdcote/coyoteweb/branch/master/graph/badge.svg)](https://codecov.io/gh/sdcote/coyoteweb)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2b1b323d06b64022911a950fd30fcb1e)](https://www.codacy.com/app/sdcote/coyoteweb?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sdcote/coyoteweb&amp;utm_campaign=Badge_Grade)
-[![Download](https://api.bintray.com/packages/sdcote/maven/coyoteweb/images/download.png) ](https://bintray.com/sdcote/maven/coyoteweb/_latestVersion)
-
+[![Download](https://api.bintray.com/packages/sdcote/maven/CoyoteWeb/images/download.svg)](https://bintray.com/sdcote/maven/CoyoteWeb/_latestVersion)
 # CoyoteWeb
 Small, embeddable web server using the Loader toolkit.
 
