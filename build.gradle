@@ -1,3 +1,15 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+  }
+}
+
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
@@ -57,7 +69,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 
-// add javadoc/source jar tasks as artifacts
 artifacts {
 	archives sourcesJar, javadocJar
 }
@@ -87,3 +98,19 @@ publishing {
 task wrapper(type: Wrapper) {
 	gradleVersion = '4.2'
 }
+
+
+bintray {
+	user = bintrayUser
+	key = bintrayKey
+	publications = ['mavenJava']
+	pkg {
+		repo = 'maven'
+		name = 'CoyoteWeb'
+		desc = 'Small, embeddable web server using the Coyote Loader toolkit.'
+		licenses = ['MIT']
+		labels = ['Java', 'HTTPD','WebServer']
+		vcsUrl = 'https://github.com/sdcote/coyoteweb.git'
+	}
+}
+
