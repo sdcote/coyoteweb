@@ -70,8 +70,13 @@ public class FileServer extends WebServer {
 
       server.addRoute("/", FileResponder.class, this, cfg);
       server.addRoute("/(.)+", FileResponder.class, this, cfg);
-
     }
+
+    // If there are no ACL rules, default to allow everything.
+    if (server.getIpAcl().size() == 0) {
+      server.getIpAcl().setDefaultAllow(true);
+    }
+    Log.info("Access Control List: "+server.getIpAcl().toString());
   }
 
 }
