@@ -180,7 +180,7 @@ public abstract class AbstractStore extends AbstractManagedComponent implements 
     if ( configuration.containsIgnoreCase( PASSWORD ) ) {
       return configuration.getAsString( PASSWORD );
     } else if ( configuration.containsIgnoreCase( Loader.ENCRYPT_PREFIX + PASSWORD ) ) {
-      return CipherUtil.decryptString( configuration.getAsString( Loader.ENCRYPT_PREFIX + PASSWORD ) );
+      return CipherUtil.decryptString( configuration.getString( Loader.ENCRYPT_PREFIX + PASSWORD ) );
     } else {
       return null;
     }
@@ -193,7 +193,7 @@ public abstract class AbstractStore extends AbstractManagedComponent implements 
     if ( configuration.containsIgnoreCase( USERNAME ) ) {
       return configuration.getFieldIgnoreCase( USERNAME ).getStringValue();
     } else if ( configuration.containsIgnoreCase( Loader.ENCRYPT_PREFIX + USERNAME ) ) {
-      return CipherUtil.decryptString( configuration.getFieldIgnoreCase( Loader.ENCRYPT_PREFIX + USERNAME ).getStringValue() );
+      return CipherUtil.decryptString( configuration.getString( Loader.ENCRYPT_PREFIX + USERNAME ) );
     } else {
       return null;
     }
