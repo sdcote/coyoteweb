@@ -1,16 +1,15 @@
 {
 	"Class" : "coyote.commons.WebServer",
+
+	"IPACL" : { "default" : "allow" },
 	
 	"Mappings" : {
-		"/api/entity:key" : { "Class" : "coyote.responder.EntityService", "DataStore":"Default" },
-		"/api/identity:key" : { "Class" : "coyote.responder.IdentityService", "DataStore":"Default" },
-		"/api/group:key" : { "Class" : "coyote.responder.GroupService", "DataStore":"Default" },
-		"/api/menu:key" : { "Class" : "coyote.responder.NavigationService", "DataStore":"Default" },
+		"/api/entity/:key" : { "Class" : "coyote.responder.EntityService", "DataStore":"Default" },
+		"/api/identity/:key" : { "Class" : "coyote.responder.IdentityService", "DataStore":"Default" },
+		"/api/group/:key" : { "Class" : "coyote.responder.GroupService", "DataStore":"Default" },
+		"/api/menu/:key" : { "Class" : "coyote.responder.NavigationService", "DataStore":"Default" },
 		"/api/session" : { "Class" : "coyote.responder.SessionService", "DataStore":"Default" },
-		"/api/session:key" : { "Class" : "coyote.responder.SessionService", "DataStore":"Default" },
-	
-		"/" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 },
-		"/(.)+" : { "Class" : "coyote.responder.FileResponder", "root":"src/dev/resources/content", "Priority" : 16383 }
+		"/api/session/:key" : { "Class" : "coyote.responder.SessionService", "DataStore":"Default" }
 	},
 	
 	"Component": [
@@ -28,9 +27,8 @@
 	],
 		
 	"Logging": {
-		"ConsoleAppender": { "name": "default", "target": "STDOUT", "categories": "info, notice, error, fatal, warn" },
-		"CyclingFileAppender": { "name": "debug", "target": "debug.log", "categories": "trace, debug, info, notice, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true },
-		"CyclingFileAppender": { "name": "http", "target": "httpd.log", "categories": "httpd", "generations": 7, "interval": "1d", "cycletime": "00:03", "maxsize": "10MB" }
+		"StandardOutput": { "name": "default", "target": "STDOUT", "categories": "httpd, info, notice, error, fatal, warn" },
+		"CyclingFileAppender": { "name": "debug", "target": "debug.log", "categories": "trace, debug, info, notice, error, fatal, warn", "generations": 10, "maxsize": "2MB", "enabled": true }
 	}
 
 }
